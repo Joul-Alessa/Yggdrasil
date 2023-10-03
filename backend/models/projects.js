@@ -7,8 +7,9 @@ const project = new mongoose.Schema({
     long_desc: { type: String, required: true },
     softwares: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Software' }],
     skills: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Skill' }],
-    project_type: { type: String, enum: ['0', '1'], required: true },
+    project_type: { type: String, enum: ['0', '1', '2'], required: true },
     order_number: { type: Number, required: true },
+    formality: { type: String, enum: ['0', '1'], required: true },
     picture: { type: String, required: true }, // Cambiar con su alternativa usando multer
 });
 
@@ -21,8 +22,9 @@ function validateProject(project){
         long_desc: Joi.string().max(8192).required(),
         softwares: Joi.array().items(Joi.string().alphanum().length(24)).optional(),
         skills: Joi.array().items(Joi.string().alphanum().length(24)).optional(),
-        project_type: Joi.string().valid("0", "1").required(),
+        project_type: Joi.string().valid("0", "1", "2").required(),
         order_number: Joi.number().required(),
+        formality: Joi.string().valid("0", "1").required(),
         picture: Joi.string().max(200).required()
     });
 

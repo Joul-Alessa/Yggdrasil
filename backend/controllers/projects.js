@@ -20,6 +20,7 @@ module.exports = {
                 skills: req.body.skills,
                 project_type: req.body.project_type,
                 order_number: req.body.order_number,
+                formality: req.body.formality,
                 picture: req.body.picture
             });
 
@@ -94,6 +95,7 @@ module.exports = {
                 skills: req.body.skills,
                 project_type: req.body.project_type,
                 order_number: req.body.order_number,
+                formality: req.body.formality,
                 picture: req.body.picture
             });
 
