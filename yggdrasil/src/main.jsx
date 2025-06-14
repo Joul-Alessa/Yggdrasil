@@ -86,7 +86,7 @@ function animateDayCycle() {
   requestAnimationFrame(animateDayCycle);
 
   const elapsed = clock.getElapsedTime();
-  const t = (offset + elapsed / (24 /** 60 * 60*/)) % 1; // Ciclo de 24h → valor 0–1
+  const t = (offset + elapsed / (24 * 60 * 60)) % 1; // Ciclo de 24h → valor 0–1
   //const easedT = easeInOut(t);
   const easedT = 0.5 - 0.5 * Math.cos(t * 2 * Math.PI);
 
