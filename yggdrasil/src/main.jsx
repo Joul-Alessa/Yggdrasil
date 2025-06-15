@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'; // Controladores helpers ELIMINAR
 
 // Configuraciones generales de la escena 3D
+var stars = [];
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({
@@ -14,9 +15,9 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-camera.position.setX(100);
-camera.position.setY(60);
-camera.position.setZ(120);
+camera.position.setX(20);
+camera.position.setY(8);
+camera.position.setZ(0);
 
 // Controladores helpers ELIMINAR
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -43,6 +44,17 @@ function soilConfigurations(){
   const soil = new THREE.Mesh(soilGeometry, soilMaterial);
   soil.position.set(0, -soilHeight / 2, 0);
   scene.add(soil);
+
+  const soilRadius = 130;
+  const soilSegments = 40;
+  const soilThetaStart = 0;
+  const soilThetaLength = Math.PI * 2;
+  
+  const soilCircleGeometry = new THREE.CircleGeometry(soilRadius, soilSegments, soilThetaStart, soilThetaLength);
+  const soilCircleMaterial = new THREE.MeshPhongMaterial({ color: greenColor });
+  const soilCircle = new THREE.Mesh(soilCircleGeometry, soilCircleMaterial);
+  soilCircle.rotation.x = -Math.PI / 2;
+  scene.add(soilCircle);
 }
 soilConfigurations();
 
@@ -64,10 +76,16 @@ scene.add(sunLight);
 scene.add(moonLight);
 scene.add(ambientLight);
 
-// Easing
-function easeInOut(t) {
-  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-}
+// Esferas para sol y luna
+const sunGeometry = new THREE.DodecahedronGeometry(5, 2);
+const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xfdffb5 });
+const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+scene.add(sun);
+
+const moonGeometry = new THREE.DodecahedronGeometry(3, 2);
+const moonMaterial = new THREE.MeshBasicMaterial({ color: 0xccecff });
+const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+scene.add(moon);
 
 // Hora del sistema como fracción del ciclo de 24 horas
 function getTimeFraction() {
@@ -80,13 +98,13 @@ const clock = new THREE.Clock(false);
 const offset = getTimeFraction();
 clock.start();
 
-const sunMoonRadius = 100;
+const sunMoonRadius = 140;
 
 function animateDayCycle() {
   requestAnimationFrame(animateDayCycle);
 
   const elapsed = clock.getElapsedTime();
-  const t = (offset + elapsed / (24 * 60 * 60)) % 1; // Ciclo de 24h → valor 0–1
+  const t = (offset + elapsed / (24 * 60 * 60)) % 1; // Ciclo de 24h → valor 0–1 (puedo cambiar el divisor de 24*60*60 a 24 para más speed)
   //const easedT = easeInOut(t);
   const easedT = 0.5 - 0.5 * Math.cos(t * 2 * Math.PI);
 
@@ -97,6 +115,11 @@ function animateDayCycle() {
   // Actualizamos las luces direccionales (para "eliminarlas" cuando están abajo del plano)
   sunLight.intensity = sunLightStart + (sunLightEnd - sunLightStart) * easedT;
   moonLight.intensity = moonLightStart + (moonLightEnd - moonLightStart) * easedT;
+
+  // Actualizamos la opacidad de las estrellas
+  for (var i = 0; i < stars.length; i++) {
+    stars[i].material.opacity = easedT;
+  }
 
   // Ángulo en radianes (12:00 p.m. = 0 rad, 12:00 a.m. = PI rad)
   const angle = t * 2 * Math.PI;
@@ -111,6 +134,8 @@ function animateDayCycle() {
   // Actualizamos posiciones
   sunLight.position.set(sunX, sunY, 0);
   moonLight.position.set(moonX, moonY, 0);
+  sun.position.set(sunX, sunY, 0);
+  moon.position.set(moonX, moonY, 0);
 
   // Apuntan al centro
   sunLight.target.position.set(0, 0, 0);
@@ -122,13 +147,9 @@ function animateDayCycle() {
 }
 animateDayCycle();
 
-// Helpers de los puntos de luz
-const sunLightHelper = new THREE.PointLightHelper(sunLight);
-const moonLightHelper = new THREE.PointLightHelper(moonLight);
-scene.add(sunLightHelper, moonLightHelper);
-
 /* ------------------------------ Configuraciones del árbol central ------------------------------ */
 function mainTreeConfigurations(){
+  // Tronco
   const trunkRadiusTop = 2.5;
   const trunkRadiusBottom = 2.5;
   const trunkHeight = 10;
@@ -140,6 +161,7 @@ function mainTreeConfigurations(){
   mainTreeTrunk.position.set(0, trunkHeight / 2, 0);
   scene.add(mainTreeTrunk);
 
+  // Copa
   const verticesOfCube = [
     - 1, - 1, - 1, 1, - 1, - 1, 1, 1, - 1, - 1, 1, - 1,
     - 1, - 1, 1, 1, - 1, 1, 1, 1, 1, - 1, 1, 1,
@@ -161,55 +183,61 @@ function mainTreeConfigurations(){
   const mainTreeTop = new THREE.Mesh(mainTreeTopGeometry, mainTreeTopMaterial);
   mainTreeTop.position.set(0, trunkHeight * 1.4, 0);
   scene.add(mainTreeTop);
+
+  // Rama 1
+  const branchRadiusTop = 0.3;
+  const branchRadiusBottom = 0.3;
+  const branchHeight = 1.7;
+  const branchRadialSegments = 8;
+
+  const branchTopRadius = 0.6;
+  const branchTopDetail = 3;
+
+  const mainTreeBranchGeometry = new THREE.CylinderGeometry(branchRadiusTop, branchRadiusBottom, branchHeight, branchRadialSegments);
+  const mainTreeBranchMaterial = new THREE.MeshPhongMaterial({ color: brownColor });
+  const mainTreeBranch1 = new THREE.Mesh(mainTreeBranchGeometry, mainTreeBranchMaterial);
+  mainTreeBranch1.position.set(0, 7.5, 2.8);
+  mainTreeBranch1.rotation.x = Math.PI / 4;
+  scene.add(mainTreeBranch1);
+
+  const mainTreeBranchTopGeometry = new THREE.PolyhedronGeometry(verticesOfCube, indicesOfFaces, branchTopRadius, branchTopDetail);
+  mainTreeBranchTopGeometry.scale(1.2, 1, 1.2);
+  const mainTreeBranchTopMaterial = new THREE.MeshPhongMaterial({ color: greenColor });
+  const mainTreeBranch1Top = new THREE.Mesh(mainTreeBranchTopGeometry, mainTreeBranchTopMaterial);
+  mainTreeBranch1Top.position.set(0, 8.28, 3.35);
+  scene.add(mainTreeBranch1Top);
+
+  // Rama 2
+  const mainTreeBranch2 = new THREE.Mesh(mainTreeBranchGeometry, mainTreeBranchMaterial);
+  mainTreeBranch2.position.set(0, 6.5, -2.8);
+  mainTreeBranch2.rotation.x = -Math.PI / 4;
+  scene.add(mainTreeBranch2);
+
+  const mainTreeBranch2Top = new THREE.Mesh(mainTreeBranchTopGeometry, mainTreeBranchTopMaterial);
+  mainTreeBranch2Top.position.set(0, 7.2, -3.35);
+  scene.add(mainTreeBranch2Top);
+
+  // Rama 3
+  const mainTreeBranch3 = new THREE.Mesh(mainTreeBranchGeometry, mainTreeBranchMaterial);
+  mainTreeBranch3.position.set(2.8, 3.5, 0);
+  mainTreeBranch3.rotation.z = -Math.PI / 4;
+  scene.add(mainTreeBranch3);
+
+  const mainTreeBranch3Top = new THREE.Mesh(mainTreeBranchTopGeometry, mainTreeBranchTopMaterial);
+  mainTreeBranch3Top.position.set(3.35, 4.15, 0);
+  scene.add(mainTreeBranch3Top);
+
+  // Rama 4
+  const mainTreeBranch4 = new THREE.Mesh(mainTreeBranchGeometry, mainTreeBranchMaterial);
+  mainTreeBranch4.position.set(-2.8, 5.5, 0);
+  mainTreeBranch4.rotation.z = Math.PI / 4;
+  scene.add(mainTreeBranch4);
+
+  const mainTreeBranch4Top = new THREE.Mesh(mainTreeBranchTopGeometry, mainTreeBranchTopMaterial);
+  mainTreeBranch4Top.position.set(-3.35, 6.1, 0);
+  scene.add(mainTreeBranch4Top);
 }
 mainTreeConfigurations();
-
-/*
-// Configuraciones del árbol de Yggdrasil
-const mainTreeTrunkGeometry = new THREE.CylinderGeometry(10, 10, 80, 30); // radiusTop, radiusBottom, height, radialSegments
-const mainTreeTrunkMaterial = new THREE.MeshPhongMaterial({ color: 0xBCAEA1 });
-const mainTreeTrunk = new THREE.Mesh(mainTreeTrunkGeometry, mainTreeTrunkMaterial);
-mainTreeTrunk.position.set(0,40,0);
-scene.add(mainTreeTrunk);
-
-const verticesOfCube = [
-	- 1, - 1, - 1, 1, - 1, - 1, 1, 1, - 1, - 1, 1, - 1,
-	- 1, - 1, 1, 1, - 1, 1, 1, 1, 1, - 1, 1, 1,
-];
-const indicesOfFaces = [
-	2, 1, 0, 0, 3, 2,
-	0, 4, 7, 7, 3, 0,
-	0, 1, 5, 5, 4, 0,
-	1, 2, 6, 6, 5, 1,
-	2, 3, 7, 7, 6, 2,
-	4, 5, 6, 6, 7, 4,
-];
-
-const mainTreeTopGeometry = new THREE.PolyhedronGeometry(verticesOfCube, indicesOfFaces, 20, 5 ); // verticesOfCube, indicesOfFaces, radius, detail
-mainTreeTopGeometry.scale(1.2, 1, 1.2);
-const mainTreeTopMaterial = new THREE.MeshPhongMaterial({ color: 0xB6EEA7 });
-const mainTreeTop = new THREE.Mesh(mainTreeTopGeometry, mainTreeTopMaterial);
-mainTreeTop.position.set(0,80,0);
-scene.add(mainTreeTop);
-
-// Rama 1
-
-const mainTreeBranch1Geometry = new THREE.CylinderGeometry(2, 2, 18, 20); // radiusTop, radiusBottom, height, radialSegments
-const mainTreeBranch1Material = new THREE.MeshPhongMaterial({ color: 0xBCAEA1 });
-const mainTreeBranch1 = new THREE.Mesh(mainTreeBranch1Geometry, mainTreeBranch1Material);
-mainTreeBranch1.position.set(0,50,15);
-mainTreeBranch1.rotation.x = Math.PI / 4;
-scene.add(mainTreeBranch1);
-
-const mainTreeBranch1TopGeometry = new THREE.PolyhedronGeometry(verticesOfCube, indicesOfFaces, 4, 5 ); // verticesOfCube, indicesOfFaces, radius, detail
-mainTreeBranch1TopGeometry.scale(1.2, 1, 1.2);
-const mainTreeBranch1TopMaterial = new THREE.MeshPhongMaterial({ color: 0xB6EEA7 });
-const mainTreeBranch1Top = new THREE.Mesh(mainTreeBranch1TopGeometry, mainTreeBranch1TopMaterial);
-mainTreeBranch1Top.position.set(0,55,19);
-scene.add(mainTreeBranch1Top);
-
-// Configuraciones y generación del resto de árboles
-*/
 
 /* ------------------------------ Configuraciones de populación de los demás arbolitos ------------------------------ */
 function littleTreeConfigurations(posX, posZ){
@@ -263,8 +291,53 @@ for(i = -8; i < 8; i++){
   }
 }
 
-/* ------------------------------ ¿Partículas como nieve? ------------------------------ */
+/* ------------------------------ Configuraciones de las estrellas ------------------------------ */
+function starConfigurations(){
+  const randomMaxX = 0
+  const randomMinX = Math.PI * 2;
+  const randomMaxY = 0
+  const randomMinY = Math.PI / 2;
+  
+  const angX = Math.random() * (randomMaxX - randomMinX) + randomMinX;
+  const angY = Math.random() * (randomMaxY - randomMinY) + randomMinY;
+  
+  const starGeometry = new THREE.DodecahedronGeometry(0.4, 1);
+  const starMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  const star = new THREE.Mesh(starGeometry, starMaterial);
+  star.material.transparent = true;
+  star.position.set((140 * Math.cos(angY)) * Math.cos(angX), 140 * Math.sin(angY), (140 * Math.cos(angY)) * Math.sin(angX));
+  scene.add(star);
+  stars.push(star);
+}
 
+for(i = 0; i < 150; i++){
+  starConfigurations();
+}
+
+/* ------------------------------ Rotación de la cámara ------------------------------ */
+// Centro de rotación
+const center = new THREE.Vector3(0, 10, 0);
+const radius = 20;
+let angle = 0; // En radianes
+const speed = 0.005; // Controla la velocidad de rotación
+function cameraAnimate(){
+    requestAnimationFrame(cameraAnimate);
+  
+    // Actualizamos el ángulo:
+    angle -= speed;
+
+    // Posicionamos la cámara en círculo:
+    camera.position.x = center.x + radius * Math.cos(angle);
+    camera.position.z = center.z + radius * Math.sin(angle);
+    camera.position.y = center.y; // fija altura
+
+    // Hacemos que siempre mire al centro:
+    camera.lookAt(center);
+
+    renderer.render(scene,camera);
+}
+
+cameraAnimate();
 
 
 // Reajuste de ventana
