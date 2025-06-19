@@ -1,0 +1,33 @@
+.PresentationSection
+{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px)
+{
+  .PresentationSection
+  {
+    grid-template-columns: 3fr 2fr;
+    grid-template-rows: auto auto;
+  }
+
+  .PresentationName
+  {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .PresentationBio
+  {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .PresentationImage
+  {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}

@@ -347,7 +347,10 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
+renderer.render(scene, camera);
 
 createRoot(document.getElementById('root')).render(
-  renderer.render(scene, camera)
+  <StrictMode>
+    <App />
+  </StrictMode>
 )
