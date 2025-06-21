@@ -1,4 +1,29 @@
-img
+.PresentationImage
 {
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.PresentationImage img
+{
+  border-radius: 18px;
+  border-color: #34F847;
+  border-style: solid;
+}
+
+@media (min-width: 1080px)
+{
+  .PresentationImage img
+  {
+    width: 18rem;
+  }
+}
+
+@media (max-width: 1079px)
+{
+  .PresentationImage img
+  {
+    width: 10rem;
+  }
 }

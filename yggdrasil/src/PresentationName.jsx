@@ -1,5 +1,11 @@
 import { useEffect, useRef } from "react";
 import './PresentationName.css'
+import GitHub from './assets/images/socials/github.png';
+import LinkedIn from './assets/images/socials/linkedin.png';
+import Kaggle from './assets/images/socials/kaggle.png';
+import GoogleDev from './assets/images/socials/google-dev.png';
+import HFace from './assets/images/socials/hugging-face.png';
+import Orcid from './assets/images/socials/orcid.png';
 
 function PresentationName() {
   const textRef = useRef(null);
@@ -36,9 +42,32 @@ function PresentationName() {
   return (
     <>
       <div className='PresentationName DivGlassmorphism'>
-        <p>Hi, I'm</p>
+        <div className='VerticalCenterer'>
+          <p className="PresentationTextHi">Hi, I'm</p>
 
-        <p ref={textRef}>Joul Alessa</p>
+          <p ref={textRef} className="PresentationTextName">Joul Alessa</p>
+
+          <div className='PresentationNameSocialMediaImages'>
+            <a href='https://github.com/Joul24py' target='_blank' rel='noreferrer'>
+              <img src={GitHub} alt='GitHub profile'/>
+            </a>
+            <a href='https://www.linkedin.com/in/joel-alejandro-espinoza-sanchez-b533a3253/' target='_blank' rel='noreferrer'>
+              <img src={LinkedIn} alt='LinkedIn profile'/>
+            </a>
+            <a href='https://www.kaggle.com/joulespinozasanchez' target='_blank' rel='noreferrer'>
+              <img src={Kaggle} alt='Kaggle profile'/>
+            </a>
+            <a href='https://developers.google.com/profile/u/115558684963200671859?hl=es-419&utm_source=developers.google.com' target='_blank' rel='noreferrer'>
+              <img src={GoogleDev} alt='Google Developer profile'/>
+            </a>
+            <a href='https://huggingface.co/Joul24py' target='_blank' rel='noreferrer'>
+              <img src={HFace} alt='Hugging Face profile'/>
+            </a>
+            <a href='https://orcid.org/0009-0004-2139-5109' target='_blank' rel='noreferrer'>
+              <img src={Orcid} alt='OrcID profile'/>
+            </a>
+          </div>
+        </div>
       </div>
     </>
   )
