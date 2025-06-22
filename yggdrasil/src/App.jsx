@@ -1,21 +1,16 @@
-import { useTranslation } from 'react-i18next';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css'
-import PresentationSection from './PresentationSection.jsx';
-import ChangeLanguageSection from './ChangeLanguageSection.jsx';
-import IntroductionSection from './IntroductionSection.jsx';
-import SectionHeader from './SectionHeader.jsx';
+import HomePage from './HomePage.jsx';
 
 function App() {
-  const { t } = useTranslation();
-  
   return (
     <>
-      <div className='AppDiv'>
-        <ChangeLanguageSection />
-        <PresentationSection />
-        <IntroductionSection />
-        <SectionHeader title={t('ProfessionalExperienceTitle')} description={t('ProfessionalExperienceDescription')}/>
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/:profile" element={<HomePage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }

@@ -54,7 +54,7 @@ function PresentationName() {
             <a href='https://github.com/Joul24py' target='_blank' rel='noreferrer'>
               <img src={GitHub} alt='GitHub profile'/>
             </a>
-            <a href='https://www.linkedin.com/in/joel-alejandro-espinoza-sanchez-b533a3253/' target='_blank' rel='noreferrer'>
+            <a href='https://www.linkedin.com/in/joel-alejandro-espinoza-sanchez/' target='_blank' rel='noreferrer'>
               <img src={LinkedIn} alt='LinkedIn profile'/>
             </a>
             <a href='https://www.kaggle.com/joulespinozasanchez' target='_blank' rel='noreferrer'>

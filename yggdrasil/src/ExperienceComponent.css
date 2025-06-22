@@ -1,0 +1,100 @@
+.ExperienceComponent
+{
+  margin: 18px 0;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.411);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgb(255, 255, 255);
+  font-size: 1.2rem;
+  overflow: hidden;
+}
+
+@media (min-width: 1080px)
+{
+  .ExperienceComponent
+  {
+    display: flex;
+    align-items: center;
+  }
+
+  .ExperienceComponentImageFlex
+  {
+    width: 150px;
+    align-self:stretch;
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+  }
+
+  .ExperienceComponentImageFlex
+  {
+    width: 150px;
+    align-self:stretch;
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+  }
+
+  .ExperienceComponentText1,
+  .ExperienceComponentText2,
+  .ExperienceComponentText3,
+  .ExperienceComponentText4
+  {
+    margin: 8px 0;
+  }
+}
+
+@media (max-width: 1079px)
+{
+  .ExperienceComponentImageFlex
+  {
+    display: flex;
+    justify-content: center;
+    background-color: #FFFFFF;
+  }
+
+  .ExperienceComponentText1,
+  .ExperienceComponentText2,
+  .ExperienceComponentText3,
+  .ExperienceComponentText4
+  {
+    margin: 10px 5px;
+  }
+}
+
+.ExperienceComponentImage
+{
+  width: 150px;
+  background-color: #FFFFFF;
+}
+
+.ExperienceComponentImage img
+{
+  width: 100%;
+  display: block;
+}
+
+.ExperienceComponentText
+{
+  padding: 10px 20px;
+}
+
+.ExperienceComponentText1,
+.ExperienceComponentText3
+{
+  font-weight: bold;
+}
+
+.ExperienceComponentText2,
+.ExperienceComponentText4
+{
+  font-size: 1rem;
+}
+
+.ExperienceComponentText4 a
+{
+  color: #34F847;
+}

@@ -5,7 +5,7 @@ function PresentationImage() {
   return (
     <>
       <div className='PresentationImage DivGlassmorphism'>
-        <img src={Me} className="logo" alt="Vite logo" />
+        <img src={Me} alt="Picture of myself" />
       </div>
     </>
   )

@@ -9,6 +9,21 @@
   "IntroductionText1": "And this is my",
   "IntroductionText2": "Yggdrasil Tree",
   "IntroductionText3": "This is my website. My portfolio of projects that I have developed: My Yggdrasil Tree. The project that works as the connection between all my projects. All my projects exist around this website.",
-  "ProfessionalExperienceTitle": "Professional Experience",
-  "ProfessionalExperienceDescription": "My experience includes work at the following companies."
+  "JobsTitle": "Professional Experience",
+  "JobsDescription": "My experience includes work at the following companies.",
+  "StudiesTitle": "Studies",
+  "StudiesDescription": "My academic background includes the following studies.",
+  "Date1": "Jan",
+  "Date2": "Feb",
+  "Date3": "Mar",
+  "Date4": "Apr",
+  "Date5": "May",
+  "Date6": "Jun",
+  "Date7": "Jul",
+  "Date8": "Aug",
+  "Date9": "Sep",
+  "Date10": "Oct",
+  "Date11": "Nov",
+  "Date12": "Dec",
+  "DateNull": "Present"
 }
