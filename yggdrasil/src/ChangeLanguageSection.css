@@ -1,6 +1,16 @@
 .ChangeLanguageSection
 {
   margin: 14px 0;
+  justify-content: flex-end;
+}
+
+@media (min-width: 1080px)
+{
+  .ChangeLanguageSection
+  {
+    width: fit-content;
+    margin-left: auto;
+  }
 }
 
 .ChangeLanguageSection .VerticalCenterer
