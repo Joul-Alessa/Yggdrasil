@@ -142,6 +142,15 @@ function HomePage() {
             text5={exp.description}
             imageUrl={exp.logo.formats}/>
         ))}
+
+        <SectionHeader title={t('ProductsTitle')} description={t('ProductsDescription')}/>
+        <SectionHeader title={t('ProjectsTitle')} description={t('ProjectsDescription')}/>
+        <SectionHeader title={t('ContributionsTitle')} description={t('ContributionsDescription')}/>
+        <SectionHeader title={t('CollaborationsTitle')} description={t('CollaborationsDescription')}/>
+        <SectionHeader title={t('LearningProjectsTitle')} description={t('LearningProjectsDescription')}/>
+        <SectionHeader title={t('KnowMeBetterProjectsTitle')} description={t('KnowMeBetterProjectsDescription')}/>
+        <SectionHeader title={t('FalseCVTitle')} description={t('FalseCVDescription')}/>
+        <SectionHeader title={t('RecommendedResourcesTitle')} description={t('RecommendedResourcesDescription')}/>
       </div>
     </>
   )
