@@ -3,7 +3,7 @@ import PresentationName from './PresentationName.jsx';
 import PresentationBio from './PresentationBio.jsx';
 import PresentationImage from './PresentationImage.jsx';
 
-function App() {
+function PresentationSection() {
   return (
     <>
       <div className='PresentationSection'>
@@ -15,4 +15,4 @@ function App() {
   )
 }
 
-export default App
+export default PresentationSection

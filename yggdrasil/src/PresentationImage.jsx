@@ -1,7 +1,7 @@
 import './PresentationImage.css'
 import Me from './assets/images/Me.jpg';
 
-function App() {
+function PresentationImage() {
   return (
     <>
       <div className='PresentationImage DivGlassmorphism'>
@@ -11,4 +11,4 @@ function App() {
   )
 }
 
-export default App
+export default PresentationImage

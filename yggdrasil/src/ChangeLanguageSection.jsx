@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import './ChangeLanguageSection.css'
 
-function App() {
+function ChangeLanguageSection() {
   const { t, i18n } = useTranslation();
 
   const handleChange = (e) => {
@@ -24,4 +24,4 @@ function App() {
   )
 }
 
-export default App
+export default ChangeLanguageSection

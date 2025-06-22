@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import './PresentationBio.css'
 
-function App() {
+function PresentationBio() {
   const { t } = useTranslation();
   
   return (
@@ -19,4 +19,4 @@ function App() {
   )
 }
 
-export default App
+export default PresentationBio
