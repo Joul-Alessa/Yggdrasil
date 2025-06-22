@@ -1,0 +1,24 @@
+.ChangeLanguageSection
+{
+  margin: 14px 0;
+}
+
+.ChangeLanguageSection .VerticalCenterer
+{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ChangeLanguageSection p
+{
+  display: inline;
+  font-size: 1rem;
+  margin: 4px 5px;
+}
+
+.ChangeLanguageSection select
+{
+  display: inline;
+  border-radius: 6px;
+  padding: 0px 4px;
+}

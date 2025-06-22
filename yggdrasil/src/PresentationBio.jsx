@@ -1,15 +1,18 @@
+import { useTranslation } from 'react-i18next';
 import './PresentationBio.css'
 
 function App() {
+  const { t } = useTranslation();
+  
   return (
     <>
       <div className='PresentationBio DivGlassmorphism'>
         <div className='VerticalCenterer'>
-          <p>Computer Science Engineer graduated at the Aguascalientes Autonomous University.</p>
+          <p>{t('PresentationBioText1')}</p>
 
-          <p>Work experience as backend developer with Node.js, MongoDB and Docker.</p>
+          <p>{t('PresentationBioText2')}</p>
 
-          <p>Passionate of data science and artificial intelligence topics with an undergraduate thesis done applying machine learning insights.</p>
+          <p>{t('PresentationBioText3')}</p>
         </div>
       </div>
     </>

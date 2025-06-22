@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from 'react-i18next';
 import './PresentationName.css'
 import GitHub from './assets/images/socials/github.png';
 import LinkedIn from './assets/images/socials/linkedin.png';
@@ -38,12 +39,14 @@ function PresentationName() {
 
     animateText();
   }, []);
+
+  const { t } = useTranslation();
   
   return (
     <>
       <div className='PresentationName DivGlassmorphism'>
         <div className='VerticalCenterer'>
-          <p className="PresentationTextHi">Hi, I'm</p>
+          <p className="PresentationTextHi">{t('PresentationNameHi')}</p>
 
           <p ref={textRef} className="PresentationTextName">Joul Alessa</p>
 
