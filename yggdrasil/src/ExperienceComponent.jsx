@@ -12,7 +12,6 @@ function ExperienceComponent({ text1, text2, text3, text4, text5, imageUrl }) {
   initialDate.setHours(initialDate.getHours() + 6);
   const initialDateMonth = initialDate.getMonth() + 1;
   const initialDateYear = initialDate.getFullYear();
-  console.log(text1 + '   ' + initialDate);
   initialDateDisplay = t('Date' + initialDateMonth) + ' ' + initialDateYear;
 
   if(text3 == undefined)

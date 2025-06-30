@@ -8,8 +8,7 @@
 .PresentationImage img
 {
   border-radius: 18px;
-  border-color: #34F847;
-  border-style: solid;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 @media (min-width: 1080px)

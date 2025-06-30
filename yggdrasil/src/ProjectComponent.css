@@ -1,0 +1,90 @@
+.ProjectComponent
+{
+  padding: 1rem 1.5rem;
+  width: min(260px, 75%);
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.411);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid #34F847;
+  color: rgb(255, 255, 255);
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-wrap: break-word;
+  /*animation: colorClickableCycle 2s infinite;*/
+  text-decoration: none;
+  transition: backdrop-filter 0.8s, background 0.8s;
+}
+
+.ProjectComponent:hover
+{
+  transition: backdrop-filter 0.8s, background 0.8s;
+  backdrop-filter: blur(3px);
+  background: rgba(2, 65, 0, 0.411);
+}
+
+.ProjectComponent img
+{
+  transition: filter 0.8s;
+  filter: grayscale(35%);
+}
+
+.ProjectComponent:hover img
+{
+  transition: filter 0.8s;
+  filter: grayscale(0%);
+}
+
+/*@keyframes colorClickableCycle
+{
+  0%
+  {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  50%
+  {
+    border-color: #34F847;
+  }
+  100%
+  {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+}*/
+
+.ProjectComponentImage
+{
+  width: 100%;
+}
+
+.ProjectComponentImage img
+{
+  width: 100%;
+  border-radius: 12px;
+}
+
+.ProjectComponentText1,
+.ProjectComponentText2,
+.ProjectComponentText3
+{
+  text-align: center;
+}
+
+.ProjectComponentText1
+{
+  font-weight: bold;
+}
+
+.ProjectComponentText2,
+.ProjectComponentText3
+{
+  font-size: 1rem;
+}
+
+.ProjectComponentText3
+{
+  color: #34F847;
+  text-decoration: underline;
+}

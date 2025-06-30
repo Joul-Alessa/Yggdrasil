@@ -8,14 +8,16 @@ import ChangeLanguageSection from './ChangeLanguageSection.jsx';
 import IntroductionSection from './IntroductionSection.jsx';
 import SectionHeader from './SectionHeader.jsx';
 import ExperienceComponent from './ExperienceComponent.jsx';
+import ProjectComponent from './ProjectComponent.jsx';
 
 function HomePage() {
   var { profile } = useParams();
-  const { setProfile } = useProfile();
   const [showJobs, setShowJobs] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [showStudies, setShowStudies] = useState(false);
   const [studies, setStudies] = useState([]);
+  const [showResources, setShowResources] = useState(false);
+  const [resources, setResources] = useState([]);
   const navigate = useNavigate();
   const apiBaseUrl = import.meta.env.VITE_API_URL;
 
@@ -31,6 +33,7 @@ function HomePage() {
 
     getJobs();
     getStudies();
+    getResources();
   }, [profile, navigate]);
 
   useEffect(() => {
@@ -44,6 +47,7 @@ function HomePage() {
 
       getJobs();
       getStudies();
+      getResources();
     };
 
     i18n.on('languageChanged', onLanguageChanged);
@@ -56,13 +60,16 @@ function HomePage() {
   const getProfile = async () => {
     try
     {
-      const res = await fetch(apiBaseUrl + '/api/ygg-profiles/' + profile + '?locale=' + i18n.language);
-
-      if(res.status == 404)
+      if(sessionStorage.getItem('profile') == null)
       {
-        profile = undefined;
+        const res = await fetch(apiBaseUrl + '/api/ygg-profiles/' + profile + '?locale=' + i18n.language);
+
+        if(res.status == 404)
+        {
+          sessionStorage.setItem('profile', '');
+        }
+        sessionStorage.setItem('profile', profile);
       }
-      setProfile(profile);
     } catch (error) {
       console.error(error);
     }
@@ -102,6 +109,32 @@ function HomePage() {
       else
       {
         setShowStudies(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getResources = async () => {
+    try
+    {
+      var profileParams = '';
+      if(sessionStorage.getItem('profile') != null && sessionStorage.getItem('profile') != '')
+      {
+        profileParams = '&profile=' + sessionStorage.getItem('profile');
+      }
+      console.log(profileParams);
+      const res = await fetch(apiBaseUrl + '/api/ygg-resources/?locale=' + i18n.language + profileParams);
+      const data = await res.json();
+      
+      if(data.data.length > 0)
+      {
+        setShowResources(true);
+        setResources(data.data);
+      }
+      else
+      {
+        setShowResources(false);
       }
     } catch (error) {
       console.error(error);
@@ -150,7 +183,21 @@ function HomePage() {
         <SectionHeader title={t('LearningProjectsTitle')} description={t('LearningProjectsDescription')}/>
         <SectionHeader title={t('KnowMeBetterProjectsTitle')} description={t('KnowMeBetterProjectsDescription')}/>
         <SectionHeader title={t('FalseCVTitle')} description={t('FalseCVDescription')}/>
-        <SectionHeader title={t('RecommendedResourcesTitle')} description={t('RecommendedResourcesDescription')}/>
+        {showResources && (
+          <>
+            <SectionHeader title={t('RecommendedResourcesTitle')} description={t('RecommendedResourcesDescription')}/>
+            <div className='ProjectsGrid'>
+              {resources.map((exp, index) => (
+                <ProjectComponent
+                  urlLink={exp.url}
+                  text1={exp.name}
+                  text2={exp.review}
+                  text3={exp.description}
+                  imageUrl={exp.logo.formats}/>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </>
   )
