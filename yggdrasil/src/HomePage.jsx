@@ -68,7 +68,10 @@ function HomePage() {
         {
           sessionStorage.setItem('profile', '');
         }
-        sessionStorage.setItem('profile', profile);
+        else
+        {
+          sessionStorage.setItem('profile', profile);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -123,7 +126,6 @@ function HomePage() {
       {
         profileParams = '&profile=' + sessionStorage.getItem('profile');
       }
-      console.log(profileParams);
       const res = await fetch(apiBaseUrl + '/api/ygg-resources/?locale=' + i18n.language + profileParams);
       const data = await res.json();
       

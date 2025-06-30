@@ -16,10 +16,8 @@ function ProjectComponent({ urlLink, text1, text2, text3, imageUrl }) {
   }
 
   var knowMore = '';
-  console.log(text3);
   if(text3 != undefined)
   {
-    console.log(text3);
     knowMore = t('KnowMore');
   }
   
