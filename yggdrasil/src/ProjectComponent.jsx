@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import './ProjectComponent.css'
 
-function ProjectComponent({ urlLink, text1, text2, text3, imageUrl }) {
+function ProjectComponent({ urlLink, text1, text2, text3, imageUrl, onClick }) {
   const apiBaseUrl = import.meta.env.VITE_API_URL;
   const { t } = useTranslation();
 
@@ -23,7 +23,7 @@ function ProjectComponent({ urlLink, text1, text2, text3, imageUrl }) {
   
   return (
     <>
-      <div className='ProjectComponent'>
+      <div className='ProjectComponent' onClick={onClick}>
         <div>
           <div className='ProjectComponentImage'>
             <img src={apiBaseUrl + url} />
@@ -34,7 +34,7 @@ function ProjectComponent({ urlLink, text1, text2, text3, imageUrl }) {
         </div>
         
         <div>
-          <a href={urlLink} target="_blank">
+          <a href={urlLink} target="_blank" onClick={(e) => e.stopPropagation()}>
             <p className='ProjectComponentText3'>{Visit}</p>
           </a>
         </div>
