@@ -34,7 +34,11 @@ function ProjectComponent({ urlLink, text1, text2, text3, imageUrl }) {
         </div>
         
         <div>
-          <p className='ProjectComponentText3'>{knowMore}</p>
+          <p className='ProjectComponentText3' onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            console.log('Texto1 clickeado');
+          }}>{knowMore}</p>
         </div>
       </a>
     </>

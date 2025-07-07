@@ -24,6 +24,7 @@ function HomePage() {
   const { i18n } = useTranslation();
 
   useEffect(() => {
+    sessionStorage.setItem('randomSeed', Math.floor(Math.random() * 1001));
     if (profile) {
       getProfile();
 
@@ -62,7 +63,7 @@ function HomePage() {
     {
       if(sessionStorage.getItem('profile') == null)
       {
-        const res = await fetch(apiBaseUrl + '/api/ygg-profiles/' + profile + '?locale=' + i18n.language);
+        const res = await fetch(apiBaseUrl + '/api/ygg-profiles' + profile + '?locale=' + i18n.language);
 
         if(res.status == 404)
         {
@@ -126,7 +127,7 @@ function HomePage() {
       {
         profileParams = '&profile=' + sessionStorage.getItem('profile');
       }
-      const res = await fetch(apiBaseUrl + '/api/ygg-resources/?locale=' + i18n.language + profileParams);
+      const res = await fetch(apiBaseUrl + '/api/ygg-resources?randomSeed=' + sessionStorage.getItem('randomSeed') + '&locale=' + i18n.language + profileParams);
       const data = await res.json();
       
       if(data.data.length > 0)

@@ -88,3 +88,8 @@
   color: #34F847;
   text-decoration: underline;
 }
+
+.ProjectComponentText3:hover
+{
+  color: #ffffff;
+}
