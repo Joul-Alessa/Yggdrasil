@@ -15,15 +15,15 @@ function ProjectComponent({ urlLink, text1, text2, text3, imageUrl }) {
     url = imageUrl.thumbnail.url;
   }
 
-  var knowMore = '';
-  if(text3 != undefined)
+  var Visit = '';
+  if(urlLink != undefined)
   {
-    knowMore = t('KnowMore');
+    Visit = t('Visit');
   }
   
   return (
     <>
-      <a href={urlLink} target="_blank" className='ProjectComponent'>
+      <div className='ProjectComponent'>
         <div>
           <div className='ProjectComponentImage'>
             <img src={apiBaseUrl + url} />
@@ -34,13 +34,11 @@ function ProjectComponent({ urlLink, text1, text2, text3, imageUrl }) {
         </div>
         
         <div>
-          <p className='ProjectComponentText3' onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            console.log('Texto1 clickeado');
-          }}>{knowMore}</p>
+          <a href={urlLink} target="_blank">
+            <p className='ProjectComponentText3'>{Visit}</p>
+          </a>
         </div>
-      </a>
+      </div>
     </>
   )
 }

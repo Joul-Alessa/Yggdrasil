@@ -15,8 +15,15 @@
   justify-content: space-between;
   overflow-wrap: break-word;
   /*animation: colorClickableCycle 2s infinite;*/
+  cursor: pointer;
   text-decoration: none;
   transition: backdrop-filter 0.8s, background 0.8s;
+}
+
+.ProjectComponent a
+{
+  color: rgb(255, 255, 255);
+  text-decoration: none;
 }
 
 .ProjectComponent:hover
