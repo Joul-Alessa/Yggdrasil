@@ -63,7 +63,7 @@ function HomePage() {
     {
       if(sessionStorage.getItem('profile') == null)
       {
-        const res = await fetch(apiBaseUrl + '/api/ygg-profiles' + profile + '?locale=' + i18n.language);
+        const res = await fetch(apiBaseUrl + '/api/ygg-profiles/' + profile + '?locale=' + i18n.language);
 
         if(res.status == 404)
         {

@@ -38,22 +38,6 @@
   filter: grayscale(0%);
 }
 
-/*@keyframes colorClickableCycle
-{
-  0%
-  {
-    border-color: rgba(255, 255, 255, 0.18);
-  }
-  50%
-  {
-    border-color: #34F847;
-  }
-  100%
-  {
-    border-color: rgba(255, 255, 255, 0.18);
-  }
-}*/
-
 .ProjectComponentImage
 {
   width: 100%;
@@ -86,10 +70,12 @@
 .ProjectComponentText3
 {
   color: #34F847;
+  transition: color 0.5s;
   text-decoration: underline;
 }
 
 .ProjectComponentText3:hover
 {
+  transition: color 0.5s;
   color: #ffffff;
 }
