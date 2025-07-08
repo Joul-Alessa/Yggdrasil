@@ -86,3 +86,9 @@
   transition: color 0.5s;
   color: #ffffff;
 }
+
+.TechnologyComponent
+{
+  text-align: center;
+  line-height: 28px;
+}

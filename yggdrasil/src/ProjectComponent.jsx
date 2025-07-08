@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
+import TechnologyComponent from './TechnologyComponent.jsx';
 import './ProjectComponent.css'
 
-function ProjectComponent({ urlLink, text1, text2, text3, imageUrl, onClick }) {
+function ProjectComponent({ urlLink, text1, text2, text3, technologies, imageUrl, onClick }) {
   const apiBaseUrl = import.meta.env.VITE_API_URL;
   const { t } = useTranslation();
 
@@ -20,6 +21,8 @@ function ProjectComponent({ urlLink, text1, text2, text3, imageUrl, onClick }) {
   {
     Visit = t('Visit');
   }
+
+  console.log(technologies);
   
   return (
     <>
@@ -30,6 +33,18 @@ function ProjectComponent({ urlLink, text1, text2, text3, imageUrl, onClick }) {
           </div>
 
           <p className='ProjectComponentText1'>{text1}</p>
+
+          {technologies.length > 0 && (
+            <div className='TechnologyComponent'>
+            {technologies.map((exp, index) => (
+              <TechnologyComponent
+              text={exp.name}
+              fontColor={exp.font_color}
+              backColor={exp.background_color}/>
+            ))}
+            </div>
+          )}
+
           <p className='ProjectComponentText2'>{text2}</p>
         </div>
         

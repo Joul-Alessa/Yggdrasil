@@ -10,6 +10,7 @@ import IntroductionSection from './IntroductionSection.jsx';
 import SectionHeader from './SectionHeader.jsx';
 import ExperienceComponent from './ExperienceComponent.jsx';
 import ProjectComponent from './ProjectComponent.jsx';
+import TechnologyComponent from './TechnologyComponent.jsx';
 
 function getPaginationRange(current, total, delta = 1)
 {
@@ -66,11 +67,12 @@ function HomePage() {
   }, [showModal]);
   
   // Eventos para abrir y cerrar el modal
-  const openModal = (name, description, url) => {
+  const openModal = (name, description, url, technologies) => {
     setModalContent({
       name,
       description,
-      url
+      url,
+      technologies
     });
     setShowModal(true);
   };
@@ -253,7 +255,11 @@ function HomePage() {
         <SectionHeader title={t('CollaborationsTitle')} description={t('CollaborationsDescription')}/>
         <SectionHeader title={t('LearningProjectsTitle')} description={t('LearningProjectsDescription')}/>
         <SectionHeader title={t('KnowMeBetterProjectsTitle')} description={t('KnowMeBetterProjectsDescription')}/>
-        <SectionHeader title={t('FalseCVTitle')} description={t('FalseCVDescription')}/>
+
+        {1 == 2 && (
+          <SectionHeader title={t('FalseCVTitle')} description={t('FalseCVDescription')}/> // Quito de momento el Falso CV hasta que lo desarrolle mejor
+        )}
+        
         {showResources && (
           <>
             <SectionHeader title={t('RecommendedResourcesTitle')} description={t('RecommendedResourcesDescription')}/>
@@ -264,8 +270,9 @@ function HomePage() {
                   text1={exp.name}
                   text2={exp.review}
                   text3={exp.description}
+                  technologies={exp.ygg_technologies}
                   imageUrl={exp.logo.formats}
-                  onClick={() => openModal(exp.name, exp.description, exp.url)}/>
+                  onClick={() => openModal(exp.name, exp.description, exp.url, exp.ygg_technologies)}/>
               ))}
             </div>
 
@@ -275,7 +282,7 @@ function HomePage() {
                   onClick={() => setResourcesPage((prev) => Math.max(prev - 1, 1))}
                   disabled={resourcesPage === 1}
                 >
-                  {t('Previous')}
+                  {t('PaginationPrevious')}
                 </button>
 
                 {getPaginationRange(resourcesPage, resourcesTotalPages).map((item, index) =>
@@ -296,7 +303,7 @@ function HomePage() {
                   onClick={() => setResourcesPage((prev) => Math.min(prev + 1, resourcesTotalPages))}
                   disabled={resourcesPage === resourcesTotalPages}
                 >
-                  {t('Next')}
+                  {t('PaginationNext')}
                 </button>
               </div>
             )}
@@ -307,6 +314,17 @@ function HomePage() {
           <div className="modal-overlay" onClick={closeModal}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <h2>{modalContent.name}</h2>
+
+              {modalContent.technologies && (
+                <div className='TechnologyComponent'>
+                  {modalContent.technologies.map((exp, index) => (
+                    <TechnologyComponent
+                    text={exp.name}
+                    fontColor={exp.font_color}
+                    backColor={exp.background_color}/>
+                  ))}
+                </div>
+              )}
 
               {modalContent.url && (
                 <p>

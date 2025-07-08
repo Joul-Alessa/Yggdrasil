@@ -43,5 +43,7 @@
   "RecommendedResourcesTitle": "",
   "RecommendedResourcesDescription": "",
   "Visit": "",
-  "CloseModal": ""
+  "CloseModal": "",
+  "PaginationPrevious": "",
+  "PaginationNext": ""
 }

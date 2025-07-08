@@ -43,5 +43,7 @@
   "RecommendedResourcesTitle": "Recursos recomendados",
   "RecommendedResourcesDescription": "Recursos no desarrollados por mí pero que los he descubierto, recomiendo y creo que pueden ser útiles.",
   "Visit": "Visitar",
-  "CloseModal": "Cerrar"
+  "CloseModal": "Cerrar",
+  "PaginationPrevious": "Anterior",
+  "PaginationNext": "Siguiente"
 }
