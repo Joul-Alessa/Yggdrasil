@@ -45,10 +45,15 @@ function HomePage() {
   const [jobs, setJobs] = useState([]);
   const [showStudies, setShowStudies] = useState(false);
   const [studies, setStudies] = useState([]);
+  const [showProjects, setShowProjects] = useState(false);
+  const [projects, setProjects] = useState([]);
   const [showResources, setShowResources] = useState(false);
   const [resources, setResources] = useState([]);
   const navigate = useNavigate();
   const apiBaseUrl = import.meta.env.VITE_API_URL;
+  const [projectsPage, setProjectsPage] = useState(1);
+  const [projectsPageSize] = useState(10);
+  const [projectsTotalPages, setProjectsTotalPages] = useState(1);
   const [resourcesPage, setResourcesPage] = useState(1);
   const [resourcesPageSize] = useState(10);
   const [resourcesTotalPages, setResourcesTotalPages] = useState(1);
@@ -97,6 +102,7 @@ function HomePage() {
 
     getJobs();
     getStudies();
+    getProjects();
     getResources();
   }, [profile, navigate]);
 
@@ -111,6 +117,7 @@ function HomePage() {
 
       getJobs();
       getStudies();
+      getProjects();
       getResources();
     };
 
@@ -188,6 +195,32 @@ function HomePage() {
     }
   };
 
+  const getProjects = async () => {
+    try
+    {
+      var profileParams = '';
+      if(sessionStorage.getItem('profile') != null && sessionStorage.getItem('profile') != '')
+      {
+        profileParams = '&profile=' + sessionStorage.getItem('profile');
+      }
+      const res = await fetch(apiBaseUrl + '/api/ygg-projects?projectType=personal&page=' + resourcesPage + '&pageSize=' + resourcesPageSize + '&locale=' + i18n.language + profileParams);
+      const data = await res.json();
+      
+      if(data.data.length > 0)
+      {
+        setShowProjects(true);
+        setProjects(data.data);
+        setProjectsTotalPages(data.meta.totalPages);
+      }
+      else
+      {
+        setShowProjects(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
   const getResources = async () => {
     try
     {
@@ -250,7 +283,57 @@ function HomePage() {
         ))}
 
         <SectionHeader title={t('ProductsTitle')} description={t('ProductsDescription')}/>
-        <SectionHeader title={t('ProjectsTitle')} description={t('ProjectsDescription')}/>
+
+        {showProjects && (
+          <>
+            <SectionHeader title={t('ProjectsTitle')} description={t('ProjectsDescription')}/>
+            <div className='ProjectsGrid'>
+              {projects.map((exp, index) => (
+                <ProjectComponent
+                  urlLink={exp.url}
+                  text1={exp.name}
+                  text2={exp.review}
+                  text3={exp.description}
+                  technologies={exp.ygg_technologies}
+                  imageUrl={exp.logo.formats}
+                  onClick={() => openModal(exp.name, exp.description, exp.url, exp.ygg_technologies)}/>
+              ))}
+            </div>
+
+            {projectsTotalPages > 1 && (
+              <div className='PaginationControls'>
+                <button
+                  onClick={() => setProjectsPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={projectsPage === 1}
+                >
+                  {t('PaginationPrevious')}
+                </button>
+
+                {getPaginationRange(projectsPage, projectsTotalPages).map((item, index) =>
+                  item === '...' ? (
+                    <span key={index} className="PaginationEllipsis">…</span>
+                  ) : (
+                    <button
+                      key={index}
+                      onClick={() => setProjectsPage(item)}
+                      className={item === projectsPage ? 'active' : ''}
+                    >
+                      {item}
+                    </button>
+                  )
+                )}
+
+                <button
+                  onClick={() => setProjectsPage((prev) => Math.min(prev + 1, projectsTotalPages))}
+                  disabled={projectsPage === projectsTotalPages}
+                >
+                  {t('PaginationNext')}
+                </button>
+              </div>
+            )}
+          </>
+        )}
+
         <SectionHeader title={t('ContributionsTitle')} description={t('ContributionsDescription')}/>
         <SectionHeader title={t('CollaborationsTitle')} description={t('CollaborationsDescription')}/>
         <SectionHeader title={t('LearningProjectsTitle')} description={t('LearningProjectsDescription')}/>

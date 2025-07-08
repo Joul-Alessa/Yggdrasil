@@ -22,8 +22,6 @@ function ProjectComponent({ urlLink, text1, text2, text3, technologies, imageUrl
     Visit = t('Visit');
   }
 
-  console.log(technologies);
-  
   return (
     <>
       <div className='ProjectComponent' onClick={onClick}>
