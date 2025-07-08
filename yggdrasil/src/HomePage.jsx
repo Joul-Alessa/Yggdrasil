@@ -28,7 +28,7 @@ function HomePage() {
   const navigate = useNavigate();
   const apiBaseUrl = import.meta.env.VITE_API_URL;
   const [resourcesPage, setResourcesPage] = useState(1);
-  const [resourcesPageSize] = useState(10);
+  const [resourcesPageSize] = useState(2);
   const [resourcesTotalPages, setResourcesTotalPages] = useState(1);
 
   // Evitar que se haga scroll cuando el modal está abierto
@@ -255,7 +255,17 @@ function HomePage() {
               >
                 {t('Previous')}
               </button>
-              <span>{t('Page')} {resourcesPage} / {resourcesTotalPages}</span>
+
+              {Array.from({ length: resourcesTotalPages }, (_, i) => i + 1).map((pageNum) => (
+                <button
+                  key={pageNum}
+                  onClick={() => setResourcesPage(pageNum)}
+                  className={pageNum === resourcesPage ? 'active' : ''}
+                >
+                  {pageNum}
+                </button>
+              ))}
+
               <button
                 onClick={() => setResourcesPage((prev) => Math.min(prev + 1, resourcesTotalPages))}
                 disabled={resourcesPage === resourcesTotalPages}
