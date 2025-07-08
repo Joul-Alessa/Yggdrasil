@@ -1,6 +1,7 @@
 .HomePageDiv
 {
   margin: 0 15vw;
+  padding-bottom: 20px;
 }
 
 .DivGlassmorphism
@@ -76,7 +77,8 @@
   transition: background 0.4s;
 }
 
-.PaginationControls {
+.PaginationControls
+{
   margin-top: 1rem;
   display: flex;
   flex-wrap: wrap;
@@ -85,21 +87,36 @@
   justify-content: center;
 }
 
-.PaginationControls button {
+.PaginationControls button
+{
   padding: 0.5rem 0.8rem;
-  background-color: #e0e0e0;
-  border: none;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(15px);
+  border-style: solid;
+  border-color: #34F847;
+  border-width: 1px;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.PaginationControls button.active {
-  background-color: #007bff;
-  color: white;
+.PaginationControls button.active
+{
+  background-color: #34F847;
+  color: black;
   font-weight: bold;
+  cursor: default;
 }
 
-.PaginationControls button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.PaginationControls button:disabled
+{
+  background-color: rgba(0, 0, 0, 0.2);
+  border: none;
+  cursor: default;
+}
+
+.PaginationEllipsis
+{
+  padding: 0.5rem 0.8rem;
+  color: #CCCCCC;
 }

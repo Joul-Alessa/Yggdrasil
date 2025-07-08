@@ -11,6 +11,27 @@ import SectionHeader from './SectionHeader.jsx';
 import ExperienceComponent from './ExperienceComponent.jsx';
 import ProjectComponent from './ProjectComponent.jsx';
 
+function getPaginationRange(current, total, delta = 1)
+{
+  const range = [];
+  const left = Math.max(2, current - delta);
+  const right = Math.min(total - 1, current + delta);
+
+  range.push(1); // Always show first
+
+  if (left > 2) range.push('...');
+
+  for (let i = left; i <= right; i++) {
+    range.push(i);
+  }
+
+  if (right < total - 1) range.push('...');
+
+  if (total > 1) range.push(total); // Always show last
+
+  return range;
+}
+
 function HomePage() {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState({
@@ -28,7 +49,7 @@ function HomePage() {
   const navigate = useNavigate();
   const apiBaseUrl = import.meta.env.VITE_API_URL;
   const [resourcesPage, setResourcesPage] = useState(1);
-  const [resourcesPageSize] = useState(2);
+  const [resourcesPageSize] = useState(10);
   const [resourcesTotalPages, setResourcesTotalPages] = useState(1);
 
   // Evitar que se haga scroll cuando el modal está abierto
@@ -248,31 +269,37 @@ function HomePage() {
               ))}
             </div>
 
-            <div className='PaginationControls'>
-              <button
-                onClick={() => setResourcesPage((prev) => Math.max(prev - 1, 1))}
-                disabled={resourcesPage === 1}
-              >
-                {t('Previous')}
-              </button>
-
-              {Array.from({ length: resourcesTotalPages }, (_, i) => i + 1).map((pageNum) => (
+            {resourcesTotalPages > 1 && (
+              <div className='PaginationControls'>
                 <button
-                  key={pageNum}
-                  onClick={() => setResourcesPage(pageNum)}
-                  className={pageNum === resourcesPage ? 'active' : ''}
+                  onClick={() => setResourcesPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={resourcesPage === 1}
                 >
-                  {pageNum}
+                  {t('Previous')}
                 </button>
-              ))}
 
-              <button
-                onClick={() => setResourcesPage((prev) => Math.min(prev + 1, resourcesTotalPages))}
-                disabled={resourcesPage === resourcesTotalPages}
-              >
-                {t('Next')}
-              </button>
-            </div>
+                {getPaginationRange(resourcesPage, resourcesTotalPages).map((item, index) =>
+                  item === '...' ? (
+                    <span key={index} className="PaginationEllipsis">…</span>
+                  ) : (
+                    <button
+                      key={index}
+                      onClick={() => setResourcesPage(item)}
+                      className={item === resourcesPage ? 'active' : ''}
+                    >
+                      {item}
+                    </button>
+                  )
+                )}
+
+                <button
+                  onClick={() => setResourcesPage((prev) => Math.min(prev + 1, resourcesTotalPages))}
+                  disabled={resourcesPage === resourcesTotalPages}
+                >
+                  {t('Next')}
+                </button>
+              </div>
+            )}
           </>
         )}
 
