@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { useProfile } from './context/ProfileContext';
 import './HomePage.css'
 import PresentationSection from './PresentationSection.jsx';
@@ -12,7 +13,11 @@ import ProjectComponent from './ProjectComponent.jsx';
 
 function HomePage() {
   const [showModal, setShowModal] = useState(false);
-  const [modalContent, setModalContent] = useState('');
+  const [modalContent, setModalContent] = useState({
+    name: '',
+    description: '',
+    url: ''
+  });
   var { profile } = useParams();
   const [showJobs, setShowJobs] = useState(false);
   const [jobs, setJobs] = useState([]);
@@ -23,8 +28,24 @@ function HomePage() {
   const navigate = useNavigate();
   const apiBaseUrl = import.meta.env.VITE_API_URL;
 
-  const openModal = (description) => {
-    setModalContent(description);
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [showModal]);
+  
+  const openModal = (name, description, url) => {
+    setModalContent({
+      name,
+      description,
+      url
+    });
     setShowModal(true);
   };
 
@@ -209,7 +230,7 @@ function HomePage() {
                   text2={exp.review}
                   text3={exp.description}
                   imageUrl={exp.logo.formats}
-                  onClick={() => openModal(exp.description)}/>
+                  onClick={() => openModal(exp.name, exp.description, exp.url)}/>
               ))}
             </div>
           </>
@@ -218,8 +239,20 @@ function HomePage() {
         {showModal && (
           <div className="modal-overlay" onClick={closeModal}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <p>{modalContent}</p>
-              <button onClick={closeModal}>Cerrar</button>
+              <h2>{modalContent.name}</h2>
+
+              {modalContent.url && (
+                <p>
+                  <a href={modalContent.url} target="_blank" rel="noopener noreferrer">
+                    {modalContent.url}
+                  </a>
+                </p>
+              )}
+      
+              <div className='modal-content-markdown'>
+                <ReactMarkdown>{modalContent.description}</ReactMarkdown>
+              </div>
+              <button onClick={closeModal}>{t('CloseModal')}</button>
             </div>
           </div>
         )}
