@@ -27,7 +27,11 @@ function HomePage() {
   const [resources, setResources] = useState([]);
   const navigate = useNavigate();
   const apiBaseUrl = import.meta.env.VITE_API_URL;
+  const [resourcesPage, setResourcesPage] = useState(1);
+  const [resourcesPageSize] = useState(10);
+  const [resourcesTotalPages, setResourcesTotalPages] = useState(1);
 
+  // Evitar que se haga scroll cuando el modal está abierto
   useEffect(() => {
     if (showModal) {
       document.body.style.overflow = 'hidden';
@@ -40,6 +44,7 @@ function HomePage() {
     };
   }, [showModal]);
   
+  // Eventos para abrir y cerrar el modal
   const openModal = (name, description, url) => {
     setModalContent({
       name,
@@ -54,8 +59,10 @@ function HomePage() {
     setModalContent('');
   };
 
+  // Internacionalización
   const { i18n } = useTranslation();
 
+  // Eventos de carga de información por idioma o por carga inicial de la página
   useEffect(() => {
     sessionStorage.setItem('randomSeed', Math.floor(Math.random() * 1001));
     if (profile) {
@@ -91,6 +98,12 @@ function HomePage() {
     };
   });
 
+  // Cambios en la paginación
+  useEffect(() => {
+    getResources();
+  }, [resourcesPage, i18n.language]);
+
+  // Obtener info del BackEnd
   const getProfile = async () => {
     try
     {
@@ -160,13 +173,14 @@ function HomePage() {
       {
         profileParams = '&profile=' + sessionStorage.getItem('profile');
       }
-      const res = await fetch(apiBaseUrl + '/api/ygg-resources?randomSeed=' + sessionStorage.getItem('randomSeed') + '&locale=' + i18n.language + profileParams);
+      const res = await fetch(apiBaseUrl + '/api/ygg-resources?randomSeed=' + sessionStorage.getItem('randomSeed') + '&page=' + resourcesPage + '&pageSize=' + resourcesPageSize + '&locale=' + i18n.language + profileParams);
       const data = await res.json();
       
       if(data.data.length > 0)
       {
         setShowResources(true);
         setResources(data.data);
+        setResourcesTotalPages(data.meta.totalPages);
       }
       else
       {
@@ -232,6 +246,22 @@ function HomePage() {
                   imageUrl={exp.logo.formats}
                   onClick={() => openModal(exp.name, exp.description, exp.url)}/>
               ))}
+            </div>
+
+            <div className='PaginationControls'>
+              <button
+                onClick={() => setResourcesPage((prev) => Math.max(prev - 1, 1))}
+                disabled={resourcesPage === 1}
+              >
+                {t('Previous')}
+              </button>
+              <span>{t('Page')} {resourcesPage} / {resourcesTotalPages}</span>
+              <button
+                onClick={() => setResourcesPage((prev) => Math.min(prev + 1, resourcesTotalPages))}
+                disabled={resourcesPage === resourcesTotalPages}
+              >
+                {t('Next')}
+              </button>
             </div>
           </>
         )}

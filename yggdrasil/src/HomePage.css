@@ -31,7 +31,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.35);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -74,4 +74,26 @@
   cursor: pointer;
   background: rgba(126, 0, 0, 0.418);
   transition: background 0.4s;
+}
+
+.PaginationControls {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.PaginationControls button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.PaginationControls button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
