@@ -322,19 +322,42 @@ const center = new THREE.Vector3(0, 10, 0);
 const radius = 20;
 let angle = 0; // En radianes
 const speed = 0.005; // Controla la velocidad de rotación
+
+// Variables para scroll
+let scrollPercent = 0;
+let targetCamY = 15;
+let currentCamY = 15;
+
+let targetLookAtY = 5;
+let currentLookAtY = 5;
+
+// Escuchar scroll
+window.addEventListener('scroll', () => {
+  const maxScroll = document.body.scrollHeight - window.innerHeight;
+  scrollPercent = window.scrollY / maxScroll;
+
+  // Mapea el scroll del 0 al 1 en los rangos deseados
+  targetCamY = 15 - scrollPercent * 10; // de 15 a 5
+  targetLookAtY = 7 + scrollPercent * 6; // de 7 a 13
+});
+
 function cameraAnimate(){
     requestAnimationFrame(cameraAnimate);
   
     // Actualizamos el ángulo:
     angle -= speed;
 
+    // Easing (lerp)
+    currentCamY += (targetCamY - currentCamY) * 0.05;
+    currentLookAtY += (targetLookAtY - currentLookAtY) * 0.05;
+
     // Posicionamos la cámara en círculo:
     camera.position.x = center.x + radius * Math.cos(angle);
     camera.position.z = center.z + radius * Math.sin(angle);
-    camera.position.y = center.y; // fija altura
+    camera.position.y = currentCamY;
 
     // Hacemos que siempre mire al centro:
-    camera.lookAt(center);
+    camera.lookAt(new THREE.Vector3(0, currentLookAtY, 0));
 
     renderer.render(scene,camera);
 }
