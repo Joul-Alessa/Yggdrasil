@@ -71,6 +71,12 @@
   margin-right: auto;
 }
 
+.modal-content a,
+.modal-content-markdown a
+{
+  color: #34F847;
+}
+
 .modal-content button
 {
   padding: 5px 20px;

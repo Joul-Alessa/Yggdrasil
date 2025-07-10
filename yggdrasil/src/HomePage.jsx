@@ -418,7 +418,17 @@ function HomePage() {
               )}
       
               <div className='modal-content-markdown'>
-                <ReactMarkdown>{modalContent.description}</ReactMarkdown>
+                <ReactMarkdown
+                  components={{
+                    img: ({node, ...props}) => {
+                      const src = props.src?.startsWith('/uploads/')
+                        ? apiBaseUrl + props.src
+                        : props.src;
+
+                      return <img {...props} src={src} />
+                    }
+                  }}
+                >{modalContent.description}</ReactMarkdown>
               </div>
               <button onClick={closeModal}>{t('CloseModal')}</button>
             </div>
