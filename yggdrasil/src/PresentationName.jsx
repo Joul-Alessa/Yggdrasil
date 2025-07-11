@@ -51,7 +51,7 @@ function PresentationName() {
           <p ref={textRef} className="PresentationTextName">Joul Alessa</p>
 
           <div className='PresentationNameSocialMediaImages'>
-            <a href='https://github.com/Joul24py' target='_blank' rel='noreferrer'>
+            <a href='https://github.com/Joul-Alessa' target='_blank' rel='noreferrer'>
               <img src={GitHub} alt='GitHub profile'/>
             </a>
             <a href='https://www.linkedin.com/in/joel-alejandro-espinoza-sanchez/' target='_blank' rel='noreferrer'>
