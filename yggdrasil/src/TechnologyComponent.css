@@ -9,4 +9,5 @@
   border-radius: 6px;
   word-break: keep-all;
   overflow-wrap: normal;
+  white-space: nowrap;
 }

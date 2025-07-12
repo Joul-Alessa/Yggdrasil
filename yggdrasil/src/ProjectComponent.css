@@ -33,18 +33,6 @@
   background: rgba(2, 65, 0, 0.411);
 }
 
-.ProjectComponent img
-{
-  transition: filter 0.8s;
-  filter: grayscale(35%);
-}
-
-.ProjectComponent:hover img
-{
-  transition: filter 0.8s;
-  filter: grayscale(0%);
-}
-
 .ProjectComponentImage
 {
   width: 100%;
@@ -91,4 +79,5 @@
 {
   text-align: center;
   line-height: 28px;
+  
 }
