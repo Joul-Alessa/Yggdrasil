@@ -51,6 +51,8 @@ function HomePage() {
   const [projects, setProjects] = useState([]);
   const [showContributions, setShowContributions] = useState(false);
   const [contributions, setContributions] = useState([]);
+  const [showCollaborations, setShowCollaborations] = useState(false);
+  const [collaborations, setCollaborations] = useState([]);
   const [showResources, setShowResources] = useState(false);
   const [resources, setResources] = useState([]);
   const navigate = useNavigate();
@@ -64,6 +66,9 @@ function HomePage() {
   const [contributionsPage, setContributionsPage] = useState(1);
   const [contributionsPageSize] = useState(10);
   const [contributionsTotalPages, setContributionsTotalPages] = useState(1);
+  const [collaborationsPage, setCollaborationsPage] = useState(1);
+  const [collaborationsPageSize] = useState(10);
+  const [collaborationsTotalPages, setCollaborationsTotalPages] = useState(1);
   const [resourcesPage, setResourcesPage] = useState(1);
   const [resourcesPageSize] = useState(10);
   const [resourcesTotalPages, setResourcesTotalPages] = useState(1);
@@ -115,6 +120,7 @@ function HomePage() {
     getProducts();
     getProjects();
     getContributions();
+    getCollaborations();
     getResources();
   }, [profile, navigate]);
 
@@ -132,6 +138,7 @@ function HomePage() {
       getProducts();
       getProjects();
       getContributions();
+      getCollaborations();
       getResources();
     };
 
@@ -154,6 +161,10 @@ function HomePage() {
   useEffect(() => {
     getContributions();
   }, [contributionsPage, i18n.language]);
+
+  useEffect(() => {
+    getCollaborations();
+  }, [collaborationsPage, i18n.language]);
 
   useEffect(() => {
     getResources();
@@ -293,6 +304,32 @@ function HomePage() {
       else
       {
         setShowContributions(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getCollaborations = async () => {
+    try
+    {
+      var profileParams = '';
+      if(sessionStorage.getItem('profile') != null && sessionStorage.getItem('profile') != '')
+      {
+        profileParams = '&profile=' + sessionStorage.getItem('profile');
+      }
+      const res = await fetch(apiBaseUrl + '/api/ygg-projects?projectType=collaboration&page=' + collaborationsPage + '&pageSize=' + collaborationsPageSize + '&locale=' + i18n.language + profileParams);
+      const data = await res.json();
+      
+      if(data.data.length > 0)
+      {
+        setShowCollaborations(true);
+        setCollaborations(data.data);
+        setCollaborationsTotalPages(data.meta.totalPages);
+      }
+      else
+      {
+        setShowCollaborations(false);
       }
     } catch (error) {
       console.error(error);
@@ -510,7 +547,56 @@ function HomePage() {
           </>
         )}
 
-        <SectionHeader title={t('CollaborationsTitle')} description={t('CollaborationsDescription')}/>
+        {showCollaborations && (
+          <>
+            <SectionHeader title={t('CollaborationsTitle')} description={t('CollaborationsDescription')}/>
+            <div className='ProjectsGrid'>
+              {collaborations.map((exp, index) => (
+                <ProjectComponent
+                  urlLink={exp.url}
+                  text1={exp.name}
+                  text2={exp.review}
+                  text3={exp.description}
+                  technologies={exp.ygg_technologies}
+                  imageUrl={exp.logo.formats}
+                  onClick={() => openModal(exp.name, exp.description, exp.url, exp.ygg_technologies)}/>
+              ))}
+            </div>
+
+            {collaborationsTotalPages > 1 && (
+              <div className='PaginationControls'>
+                <button
+                  onClick={() => setCollaborationsPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={collaborationsPage === 1}
+                >
+                  {t('PaginationPrevious')}
+                </button>
+
+                {getPaginationRange(collaborationsPage, collaborationsTotalPages).map((item, index) =>
+                  item === '...' ? (
+                    <span key={index} className="PaginationEllipsis">…</span>
+                  ) : (
+                    <button
+                      key={index}
+                      onClick={() => setCollaborationsPage(item)}
+                      className={item === collaborationsPage ? 'active' : ''}
+                    >
+                      {item}
+                    </button>
+                  )
+                )}
+
+                <button
+                  onClick={() => setCollaborationsPage((prev) => Math.min(prev + 1, collaborationsTotalPages))}
+                  disabled={collaborationsPage === collaborationsTotalPages}
+                >
+                  {t('PaginationNext')}
+                </button>
+              </div>
+            )}
+          </>
+        )}
+
         <SectionHeader title={t('LearningProjectsTitle')} description={t('LearningProjectsDescription')}/>
         <SectionHeader title={t('KnowMeBetterProjectsTitle')} description={t('KnowMeBetterProjectsDescription')}/>
 
