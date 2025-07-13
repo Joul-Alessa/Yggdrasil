@@ -53,6 +53,8 @@ function HomePage() {
   const [contributions, setContributions] = useState([]);
   const [showCollaborations, setShowCollaborations] = useState(false);
   const [collaborations, setCollaborations] = useState([]);
+  const [showLearningProjects, setShowLearningProjects] = useState(false);
+  const [learningProjects, setLearningProjects] = useState([]);
   const [showResources, setShowResources] = useState(false);
   const [resources, setResources] = useState([]);
   const navigate = useNavigate();
@@ -69,6 +71,9 @@ function HomePage() {
   const [collaborationsPage, setCollaborationsPage] = useState(1);
   const [collaborationsPageSize] = useState(10);
   const [collaborationsTotalPages, setCollaborationsTotalPages] = useState(1);
+  const [learningProjectsPage, setLearningProjectsPage] = useState(1);
+  const [learningProjectsPageSize] = useState(10);
+  const [learningProjectsTotalPages, setLearningProjectsTotalPages] = useState(1);
   const [resourcesPage, setResourcesPage] = useState(1);
   const [resourcesPageSize] = useState(10);
   const [resourcesTotalPages, setResourcesTotalPages] = useState(1);
@@ -121,6 +126,7 @@ function HomePage() {
     getProjects();
     getContributions();
     getCollaborations();
+    getLearningProjects();
     getResources();
   }, [profile, navigate]);
 
@@ -139,6 +145,7 @@ function HomePage() {
       getProjects();
       getContributions();
       getCollaborations();
+      getLearningProjects();
       getResources();
     };
 
@@ -165,6 +172,10 @@ function HomePage() {
   useEffect(() => {
     getCollaborations();
   }, [collaborationsPage, i18n.language]);
+
+  useEffect(() => {
+    getLearningProjects();
+  }, [learningProjectsPage, i18n.language]);
 
   useEffect(() => {
     getResources();
@@ -330,6 +341,32 @@ function HomePage() {
       else
       {
         setShowCollaborations(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getLearningProjects = async () => {
+    try
+    {
+      var profileParams = '';
+      if(sessionStorage.getItem('profile') != null && sessionStorage.getItem('profile') != '')
+      {
+        profileParams = '&profile=' + sessionStorage.getItem('profile');
+      }
+      const res = await fetch(apiBaseUrl + '/api/ygg-projects?projectType=learning&page=' + learningProjectsPage + '&pageSize=' + learningProjectsPageSize + '&locale=' + i18n.language + profileParams);
+      const data = await res.json();
+      
+      if(data.data.length > 0)
+      {
+        setShowLearningProjects(true);
+        setLearningProjects(data.data);
+        setLearningProjectsTotalPages(data.meta.totalPages);
+      }
+      else
+      {
+        setShowLearningProjects(false);
       }
     } catch (error) {
       console.error(error);
@@ -597,7 +634,56 @@ function HomePage() {
           </>
         )}
 
-        <SectionHeader title={t('LearningProjectsTitle')} description={t('LearningProjectsDescription')}/>
+        {showLearningProjects && (
+          <>
+            <SectionHeader title={t('LearningProjectsTitle')} description={t('LearningProjectsDescription')}/>
+            <div className='ProjectsGrid'>
+              {learningProjects.map((exp, index) => (
+                <ProjectComponent
+                  urlLink={exp.url}
+                  text1={exp.name}
+                  text2={exp.review}
+                  text3={exp.description}
+                  technologies={exp.ygg_technologies}
+                  imageUrl={exp.logo.formats}
+                  onClick={() => openModal(exp.name, exp.description, exp.url, exp.ygg_technologies)}/>
+              ))}
+            </div>
+
+            {learningProjectsTotalPages > 1 && (
+              <div className='PaginationControls'>
+                <button
+                  onClick={() => setLearningProjectsPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={learningProjectsPage === 1}
+                >
+                  {t('PaginationPrevious')}
+                </button>
+
+                {getPaginationRange(learningProjectsPage, learningProjectsTotalPages).map((item, index) =>
+                  item === '...' ? (
+                    <span key={index} className="PaginationEllipsis">…</span>
+                  ) : (
+                    <button
+                      key={index}
+                      onClick={() => setLearningProjectsPage(item)}
+                      className={item === learningProjectsPage ? 'active' : ''}
+                    >
+                      {item}
+                    </button>
+                  )
+                )}
+
+                <button
+                  onClick={() => setLearningProjectsPage((prev) => Math.min(prev + 1, learningProjectsTotalPages))}
+                  disabled={learningProjectsPage === learningProjectsTotalPages}
+                >
+                  {t('PaginationNext')}
+                </button>
+              </div>
+            )}
+          </>
+        )}
+
         <SectionHeader title={t('KnowMeBetterProjectsTitle')} description={t('KnowMeBetterProjectsDescription')}/>
 
         {1 == 2 && (
