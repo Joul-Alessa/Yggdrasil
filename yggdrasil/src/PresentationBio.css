@@ -1,0 +1,13 @@
+.PresentationBio
+{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+.PresentationBio p
+{
+  font-size: 1rem;
+  margin: 15px 0;
+}

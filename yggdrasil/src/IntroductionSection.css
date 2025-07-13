@@ -1,0 +1,26 @@
+.IntroductionSection
+{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.IntroductionText1,
+.IntroductionText2,
+.IntroductionText3
+{
+  margin: 10px 0;
+}
+
+.IntroductionText2
+{
+  font-weight: bold;
+}
+
+.IntroductionText3
+{
+  font-size: 1rem;
+  margin: 15px 0;
+}

@@ -1,0 +1,32 @@
+.PresentationName
+{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+.PresentationTextHi,
+.PresentationTextName
+{
+  margin: 10px 0;
+}
+
+.PresentationTextName
+{
+  font-weight: bold;
+}
+
+.PresentationNameSocialMediaImages img
+{
+  width: 30px;
+  margin: 2px 4px;
+  opacity: 35%;
+  transition: opacity 1s;
+}
+
+.PresentationNameSocialMediaImages img:hover
+{
+  opacity: 100%;
+  transition: opacity 1s;
+}

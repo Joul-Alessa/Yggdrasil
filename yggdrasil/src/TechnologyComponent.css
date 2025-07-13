@@ -1,0 +1,13 @@
+.TechnologyComponentText
+{
+  display: inline;
+  padding: 3px 8px;
+  margin: 3px 3px;
+  line-height: 3px;
+  font-size: 14px;
+  font-family: Consolas, 'Courier New', monospace;
+  border-radius: 6px;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  white-space: nowrap;
+}
