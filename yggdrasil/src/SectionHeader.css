@@ -1,0 +1,25 @@
+.SectionHeader
+{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.SectionHeaderTitle,
+.SectionHeaderDescription
+{
+  margin: 10px 0;
+}
+
+.SectionHeaderTitle
+{
+  font-weight: bold;
+}
+
+.SectionHeaderDescription
+{
+  font-size: 1rem;
+  margin: 15px 0;
+}

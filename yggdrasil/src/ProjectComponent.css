@@ -1,0 +1,83 @@
+.ProjectComponent
+{
+  padding: 1rem 1.5rem;
+  width: min(260px, 75%);
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.411);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid #34F847;
+  color: rgb(255, 255, 255);
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-wrap: break-word;
+  /*animation: colorClickableCycle 2s infinite;*/
+  cursor: pointer;
+  text-decoration: none;
+  transition: backdrop-filter 0.8s, background 0.8s;
+}
+
+.ProjectComponent a
+{
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
+
+.ProjectComponent:hover
+{
+  transition: backdrop-filter 0.8s, background 0.8s;
+  backdrop-filter: blur(3px);
+  background: rgba(2, 65, 0, 0.411);
+}
+
+.ProjectComponentImage
+{
+  width: 100%;
+}
+
+.ProjectComponentImage img
+{
+  width: 100%;
+  border-radius: 12px;
+}
+
+.ProjectComponentText1,
+/* .ProjectComponentText2, */
+.ProjectComponentText3
+{
+  text-align: center;
+}
+
+.ProjectComponentText1
+{
+  font-weight: bold;
+}
+
+.ProjectComponentText2,
+.ProjectComponentText3
+{
+  font-size: 1rem;
+}
+
+.ProjectComponentText3
+{
+  color: #34F847;
+  transition: color 0.5s;
+  text-decoration: underline;
+}
+
+.ProjectComponentText3:hover
+{
+  transition: color 0.5s;
+  color: #ffffff;
+}
+
+.TechnologyComponent
+{
+  text-align: center;
+  line-height: 28px;
+  
+}
