@@ -55,6 +55,8 @@ function HomePage() {
   const [collaborations, setCollaborations] = useState([]);
   const [showLearningProjects, setShowLearningProjects] = useState(false);
   const [learningProjects, setLearningProjects] = useState([]);
+  const [showKnowMeBetterProjects, setShowKnowMeBetterProjects] = useState(false);
+  const [knowMeBetterProjects, setKnowMeBetterProjects] = useState([]);
   const [showResources, setShowResources] = useState(false);
   const [resources, setResources] = useState([]);
   const navigate = useNavigate();
@@ -74,6 +76,9 @@ function HomePage() {
   const [learningProjectsPage, setLearningProjectsPage] = useState(1);
   const [learningProjectsPageSize] = useState(10);
   const [learningProjectsTotalPages, setLearningProjectsTotalPages] = useState(1);
+  const [knowMeBetterProjectsPage, setKnowMeBetterProjectsPage] = useState(1);
+  const [knowMeBetterProjectsPageSize] = useState(10);
+  const [knowMeBetterProjectsTotalPages, setKnowMeBetterProjectsTotalPages] = useState(1);
   const [resourcesPage, setResourcesPage] = useState(1);
   const [resourcesPageSize] = useState(10);
   const [resourcesTotalPages, setResourcesTotalPages] = useState(1);
@@ -127,6 +132,7 @@ function HomePage() {
     getContributions();
     getCollaborations();
     getLearningProjects();
+    getKnowMeBetterProjects();
     getResources();
   }, [profile, navigate]);
 
@@ -146,6 +152,7 @@ function HomePage() {
       getContributions();
       getCollaborations();
       getLearningProjects();
+      getKnowMeBetterProjects();
       getResources();
     };
 
@@ -176,6 +183,10 @@ function HomePage() {
   useEffect(() => {
     getLearningProjects();
   }, [learningProjectsPage, i18n.language]);
+
+  useEffect(() => {
+    getKnowMeBetterProjects();
+  }, [knowMeBetterProjectsPage, i18n.language]);
 
   useEffect(() => {
     getResources();
@@ -367,6 +378,32 @@ function HomePage() {
       else
       {
         setShowLearningProjects(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getKnowMeBetterProjects = async () => {
+    try
+    {
+      var profileParams = '';
+      if(sessionStorage.getItem('profile') != null && sessionStorage.getItem('profile') != '')
+      {
+        profileParams = '&profile=' + sessionStorage.getItem('profile');
+      }
+      const res = await fetch(apiBaseUrl + '/api/ygg-projects?projectType=knowMe&page=' + knowMeBetterProjectsPage + '&pageSize=' + knowMeBetterProjectsPageSize + '&locale=' + i18n.language + profileParams);
+      const data = await res.json();
+      
+      if(data.data.length > 0)
+      {
+        setShowKnowMeBetterProjects(true);
+        setKnowMeBetterProjects(data.data);
+        setKnowMeBetterProjectsTotalPages(data.meta.totalPages);
+      }
+      else
+      {
+        setShowKnowMeBetterProjects(false);
       }
     } catch (error) {
       console.error(error);
@@ -684,7 +721,55 @@ function HomePage() {
           </>
         )}
 
-        <SectionHeader title={t('KnowMeBetterProjectsTitle')} description={t('KnowMeBetterProjectsDescription')}/>
+        {showKnowMeBetterProjects && (
+          <>
+            <SectionHeader title={t('KnowMeBetterProjectsTitle')} description={t('KnowMeBetterProjectsDescription')}/>
+            <div className='ProjectsGrid'>
+              {knowMeBetterProjects.map((exp, index) => (
+                <ProjectComponent
+                  urlLink={exp.url}
+                  text1={exp.name}
+                  text2={exp.review}
+                  text3={exp.description}
+                  technologies={exp.ygg_technologies}
+                  imageUrl={exp.logo.formats}
+                  onClick={() => openModal(exp.name, exp.description, exp.url, exp.ygg_technologies)}/>
+              ))}
+            </div>
+
+            {knowMeBetterProjectsTotalPages > 1 && (
+              <div className='PaginationControls'>
+                <button
+                  onClick={() => setKnowMeBetterProjectsPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={knowMeBetterProjectsPage === 1}
+                >
+                  {t('PaginationPrevious')}
+                </button>
+
+                {getPaginationRange(knowMeBetterProjectsPage, knowMeBetterProjectsTotalPages).map((item, index) =>
+                  item === '...' ? (
+                    <span key={index} className="PaginationEllipsis">…</span>
+                  ) : (
+                    <button
+                      key={index}
+                      onClick={() => setKnowMeBetterProjectsPage(item)}
+                      className={item === knowMeBetterProjectsPage ? 'active' : ''}
+                    >
+                      {item}
+                    </button>
+                  )
+                )}
+
+                <button
+                  onClick={() => setKnowMeBetterProjectsPage((prev) => Math.min(prev + 1, knowMeBetterProjectsTotalPages))}
+                  disabled={knowMeBetterProjectsPage === knowMeBetterProjectsTotalPages}
+                >
+                  {t('PaginationNext')}
+                </button>
+              </div>
+            )}
+          </>
+        )}
 
         {1 == 2 && (
           <SectionHeader title={t('FalseCVTitle')} description={t('FalseCVDescription')}/> // Quito de momento el Falso CV hasta que lo desarrolle mejor
