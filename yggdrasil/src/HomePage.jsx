@@ -130,6 +130,10 @@ function HomePage() {
 
   // Cambios en la paginación
   useEffect(() => {
+    getProjects();
+  }, [projectsPage, i18n.language]);
+
+  useEffect(() => {
     getResources();
   }, [resourcesPage, i18n.language]);
 
@@ -203,7 +207,7 @@ function HomePage() {
       {
         profileParams = '&profile=' + sessionStorage.getItem('profile');
       }
-      const res = await fetch(apiBaseUrl + '/api/ygg-projects?projectType=personal&page=' + resourcesPage + '&pageSize=' + resourcesPageSize + '&locale=' + i18n.language + profileParams);
+      const res = await fetch(apiBaseUrl + '/api/ygg-projects?projectType=notKnowMe&page=' + projectsPage + '&pageSize=' + projectsPageSize + '&locale=' + i18n.language + profileParams);
       const data = await res.json();
       
       if(data.data.length > 0)
