@@ -13,7 +13,7 @@ function ProjectComponent({ urlLink, text1, text2, text3, technologies, imageUrl
   }
   else
   {
-    url = imageUrl.thumbnail.url;
+    url = imageUrl.thumbnail.url.replace("thumbnail_", "");
   }
 
   var Visit = '';

@@ -45,12 +45,17 @@ function HomePage() {
   const [jobs, setJobs] = useState([]);
   const [showStudies, setShowStudies] = useState(false);
   const [studies, setStudies] = useState([]);
+  const [showProducts, setShowProducts] = useState(false);
+  const [products, setProducts] = useState([]);
   const [showProjects, setShowProjects] = useState(false);
   const [projects, setProjects] = useState([]);
   const [showResources, setShowResources] = useState(false);
   const [resources, setResources] = useState([]);
   const navigate = useNavigate();
   const apiBaseUrl = import.meta.env.VITE_API_URL;
+  const [productsPage, setProductsPage] = useState(1);
+  const [productsPageSize] = useState(1);
+  const [productsTotalPages, setProductsTotalPages] = useState(1);
   const [projectsPage, setProjectsPage] = useState(1);
   const [projectsPageSize] = useState(10);
   const [projectsTotalPages, setProjectsTotalPages] = useState(1);
@@ -130,6 +135,10 @@ function HomePage() {
 
   // Cambios en la paginación
   useEffect(() => {
+    getProducts();
+  }, [productsPage, i18n.language]);
+
+  useEffect(() => {
     getProjects();
   }, [projectsPage, i18n.language]);
 
@@ -193,6 +202,32 @@ function HomePage() {
       else
       {
         setShowStudies(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getProducts = async () => {
+    try
+    {
+      var profileParams = '';
+      if(sessionStorage.getItem('profile') != null && sessionStorage.getItem('profile') != '')
+      {
+        profileParams = '&profile=' + sessionStorage.getItem('profile');
+      }
+      const res = await fetch(apiBaseUrl + '/api/ygg-projects?projectType=product&page=' + productsPage + '&pageSize=' + productsPageSize + '&locale=' + i18n.language + profileParams);
+      const data = await res.json();
+      
+      if(data.data.length > 0)
+      {
+        setShowProducts(true);
+        setProducts(data.data);
+        setProductsTotalPages(data.meta.totalPages);
+      }
+      else
+      {
+        setShowProducts(false);
       }
     } catch (error) {
       console.error(error);
@@ -286,7 +321,55 @@ function HomePage() {
             imageUrl={exp.logo.formats}/>
         ))}
 
-        <SectionHeader title={t('ProductsTitle')} description={t('ProductsDescription')}/>
+        {showProducts && (
+          <>
+            <SectionHeader title={t('ProductsTitle')} description={t('ProductsDescription')}/>
+            <div className='ProjectsGrid'>
+              {products.map((exp, index) => (
+                <ProjectComponent
+                  urlLink={exp.url}
+                  text1={exp.name}
+                  text2={exp.review}
+                  text3={exp.description}
+                  technologies={exp.ygg_technologies}
+                  imageUrl={exp.logo.formats}
+                  onClick={() => openModal(exp.name, exp.description, exp.url, exp.ygg_technologies)}/>
+              ))}
+            </div>
+
+            {productsTotalPages > 1 && (
+              <div className='PaginationControls'>
+                <button
+                  onClick={() => setProductsPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={productsPage === 1}
+                >
+                  {t('PaginationPrevious')}
+                </button>
+
+                {getPaginationRange(productsPage, productsTotalPages).map((item, index) =>
+                  item === '...' ? (
+                    <span key={index} className="PaginationEllipsis">…</span>
+                  ) : (
+                    <button
+                      key={index}
+                      onClick={() => setProductsPage(item)}
+                      className={item === productsPage ? 'active' : ''}
+                    >
+                      {item}
+                    </button>
+                  )
+                )}
+
+                <button
+                  onClick={() => setProductsPage((prev) => Math.min(prev + 1, productsTotalPages))}
+                  disabled={productsPage === productsTotalPages}
+                >
+                  {t('PaginationNext')}
+                </button>
+              </div>
+            )}
+          </>
+        )}
 
         {showProjects && (
           <>
