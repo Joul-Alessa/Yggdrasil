@@ -49,6 +49,8 @@ function HomePage() {
   const [products, setProducts] = useState([]);
   const [showProjects, setShowProjects] = useState(false);
   const [projects, setProjects] = useState([]);
+  const [showContributions, setShowContributions] = useState(false);
+  const [contributions, setContributions] = useState([]);
   const [showResources, setShowResources] = useState(false);
   const [resources, setResources] = useState([]);
   const navigate = useNavigate();
@@ -59,6 +61,9 @@ function HomePage() {
   const [projectsPage, setProjectsPage] = useState(1);
   const [projectsPageSize] = useState(10);
   const [projectsTotalPages, setProjectsTotalPages] = useState(1);
+  const [contributionsPage, setContributionsPage] = useState(1);
+  const [contributionsPageSize] = useState(10);
+  const [contributionsTotalPages, setContributionsTotalPages] = useState(1);
   const [resourcesPage, setResourcesPage] = useState(1);
   const [resourcesPageSize] = useState(10);
   const [resourcesTotalPages, setResourcesTotalPages] = useState(1);
@@ -107,7 +112,9 @@ function HomePage() {
 
     getJobs();
     getStudies();
+    getProducts();
     getProjects();
+    getContributions();
     getResources();
   }, [profile, navigate]);
 
@@ -122,7 +129,9 @@ function HomePage() {
 
       getJobs();
       getStudies();
+      getProducts();
       getProjects();
+      getContributions();
       getResources();
     };
 
@@ -141,6 +150,10 @@ function HomePage() {
   useEffect(() => {
     getProjects();
   }, [projectsPage, i18n.language]);
+
+  useEffect(() => {
+    getContributions();
+  }, [contributionsPage, i18n.language]);
 
   useEffect(() => {
     getResources();
@@ -254,6 +267,32 @@ function HomePage() {
       else
       {
         setShowProjects(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getContributions = async () => {
+    try
+    {
+      var profileParams = '';
+      if(sessionStorage.getItem('profile') != null && sessionStorage.getItem('profile') != '')
+      {
+        profileParams = '&profile=' + sessionStorage.getItem('profile');
+      }
+      const res = await fetch(apiBaseUrl + '/api/ygg-projects?projectType=contribution&page=' + contributionsPage + '&pageSize=' + contributionsPageSize + '&locale=' + i18n.language + profileParams);
+      const data = await res.json();
+      
+      if(data.data.length > 0)
+      {
+        setShowContributions(true);
+        setContributions(data.data);
+        setContributionsTotalPages(data.meta.totalPages);
+      }
+      else
+      {
+        setShowContributions(false);
       }
     } catch (error) {
       console.error(error);
@@ -421,7 +460,56 @@ function HomePage() {
           </>
         )}
 
-        <SectionHeader title={t('ContributionsTitle')} description={t('ContributionsDescription')}/>
+        {showContributions && (
+          <>
+            <SectionHeader title={t('ContributionsTitle')} description={t('ContributionsDescription')}/>
+            <div className='ProjectsGrid'>
+              {contributions.map((exp, index) => (
+                <ProjectComponent
+                  urlLink={exp.url}
+                  text1={exp.name}
+                  text2={exp.review}
+                  text3={exp.description}
+                  technologies={exp.ygg_technologies}
+                  imageUrl={exp.logo.formats}
+                  onClick={() => openModal(exp.name, exp.description, exp.url, exp.ygg_technologies)}/>
+              ))}
+            </div>
+
+            {contributionsTotalPages > 1 && (
+              <div className='PaginationControls'>
+                <button
+                  onClick={() => setContributionsPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={contributionsPage === 1}
+                >
+                  {t('PaginationPrevious')}
+                </button>
+
+                {getPaginationRange(contributionsPage, contributionsTotalPages).map((item, index) =>
+                  item === '...' ? (
+                    <span key={index} className="PaginationEllipsis">…</span>
+                  ) : (
+                    <button
+                      key={index}
+                      onClick={() => setContributionsPage(item)}
+                      className={item === contributionsPage ? 'active' : ''}
+                    >
+                      {item}
+                    </button>
+                  )
+                )}
+
+                <button
+                  onClick={() => setContributionsPage((prev) => Math.min(prev + 1, contributionsTotalPages))}
+                  disabled={contributionsPage === contributionsTotalPages}
+                >
+                  {t('PaginationNext')}
+                </button>
+              </div>
+            )}
+          </>
+        )}
+
         <SectionHeader title={t('CollaborationsTitle')} description={t('CollaborationsDescription')}/>
         <SectionHeader title={t('LearningProjectsTitle')} description={t('LearningProjectsDescription')}/>
         <SectionHeader title={t('KnowMeBetterProjectsTitle')} description={t('KnowMeBetterProjectsDescription')}/>
