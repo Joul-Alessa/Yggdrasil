@@ -60,10 +60,10 @@ function PresentationName() {
             <a href='https://www.kaggle.com/joulespinozasanchez' target='_blank' rel='noreferrer'>
               <img src={Kaggle} alt='Kaggle profile'/>
             </a>
-            <a href='https://developers.google.com/profile/u/115558684963200671859?hl=es-419&utm_source=developers.google.com' target='_blank' rel='noreferrer'>
+            <a href='https://developers.google.com/profile/u/Joul-Alessa' target='_blank' rel='noreferrer'>
               <img src={GoogleDev} alt='Google Developer profile'/>
             </a>
-            <a href='https://huggingface.co/Joul24py' target='_blank' rel='noreferrer'>
+            <a href='https://huggingface.co/Joul-Alessa' target='_blank' rel='noreferrer'>
               <img src={HFace} alt='Hugging Face profile'/>
             </a>
             <a href='https://orcid.org/0009-0004-2139-5109' target='_blank' rel='noreferrer'>
