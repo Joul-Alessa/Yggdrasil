@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useProfile } from './context/ProfileContext';
@@ -40,7 +40,9 @@ function HomePage() {
     description: '',
     url: ''
   });
-  var { profile } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  var profile = queryParams.get("profile");
   const [showJobs, setShowJobs] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [showStudies, setShowStudies] = useState(false);
@@ -117,32 +119,35 @@ function HomePage() {
 
   // Eventos de carga de información por idioma o por carga inicial de la página
   useEffect(() => {
-    sessionStorage.setItem('randomSeed', Math.floor(Math.random() * 1001));
-    if (profile) {
-      getProfile();
+    const fetchData = async () => {
+      sessionStorage.setItem('randomSeed', Math.floor(Math.random() * 1001));
+      
+      if (profile) {
+        await getProfile(); // Esperar validación del perfil
+      }
 
-      // Limpiar la URL redirigiendo al home
-      navigate('/', { replace: true }); // replace evita que vuelva atrás al parámetro
-    }
+      // Solo después de validar el perfil, se hacen estas llamadas
+      await Promise.all([
+        getJobs(),
+        getStudies(),
+        getProducts(),
+        getProjects(),
+        getContributions(),
+        getCollaborations(),
+        getLearningProjects(),
+        getKnowMeBetterProjects(),
+        getResources()
+      ]);
+    };
 
-    getJobs();
-    getStudies();
-    getProducts();
-    getProjects();
-    getContributions();
-    getCollaborations();
-    getLearningProjects();
-    getKnowMeBetterProjects();
-    getResources();
+    // Ejecutar la función async
+    fetchData();
   }, [profile, navigate]);
 
   useEffect(() => {
     const onLanguageChanged = (lng) => {
       if (profile) {
         getProfile();
-
-        // Limpiar la URL redirigiendo al home
-        navigate('/', { replace: true }); // replace evita que vuelva atrás al parámetro
       }
 
       getJobs();
