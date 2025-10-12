@@ -9,7 +9,7 @@ i18n
   .use(initReactI18next) // conecta con React
   .init({
     fallbackLng: 'en', // idioma por defecto
-    debug: true,
+    debug: false,
     interpolation: {
       escapeValue: false, // React ya protege contra XSS
     },
