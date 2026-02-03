@@ -833,41 +833,52 @@ function HomePage() {
         {showModal && (
           <div className="modal-overlay" onClick={closeModal}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <h2>{modalContent.name}</h2>
-
-              {modalContent.technologies && (
-                <div className='TechnologyComponent'>
-                  {modalContent.technologies.map((exp, index) => (
-                    <TechnologyComponent
-                    text={exp.name}
-                    fontColor={exp.font_color}
-                    backColor={exp.background_color}/>
-                  ))}
-                </div>
-              )}
-
-              {modalContent.url && (
-                <p>
-                  <a href={modalContent.url} target="_blank" rel="noopener noreferrer">
-                    {modalContent.url}
-                  </a>
-                </p>
-              )}
-      
-              <div className='modal-content-markdown'>
-                <ReactMarkdown
-                  components={{
-                    img: ({node, ...props}) => {
-                      const src = props.src?.startsWith('/uploads/')
-                        ? apiBaseUrl + props.src
-                        : props.src;
-
-                      return <img {...props} src={src} />
-                    }
-                  }}
-                >{modalContent.description}</ReactMarkdown>
+              
+              <div className="modal-body">
+                <button className="close-modal-button" onClick={closeModal}>
+                  {t('CloseModal')}
+                </button>
               </div>
-              <button onClick={closeModal}>{t('CloseModal')}</button>
+
+              <div className="modal-body">
+                <h2>{modalContent.name}</h2>
+
+                {modalContent.technologies && (
+                  <div className='TechnologyComponent' style={{ justifyContent: 'center' }}>
+                    {modalContent.technologies.map((exp, index) => (
+                      <TechnologyComponent
+                        key={index}
+                        text={exp.name}
+                        fontColor={exp.font_color}
+                        backColor={exp.background_color}
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {modalContent.url && (
+                  <p>
+                    <a href={modalContent.url} target="_blank" rel="noopener noreferrer">
+                      {modalContent.url}
+                    </a>
+                  </p>
+                )}
+
+                <div className='modal-content-markdown'>
+                  <ReactMarkdown
+                    components={{
+                      img: ({ node, ...props }) => {
+                        const src = props.src?.startsWith('/uploads/')
+                          ? apiBaseUrl + props.src
+                          : props.src;
+                        return <img {...props} src={src} />;
+                      }
+                    }}
+                  >
+                    {modalContent.description}
+                  </ReactMarkdown>
+                </div>
+              </div>
             </div>
           </div>
         )}

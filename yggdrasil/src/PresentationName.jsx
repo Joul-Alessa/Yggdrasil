@@ -70,6 +70,10 @@ function PresentationName() {
               <img src={Orcid} alt='OrcID profile'/>
             </a>
           </div>
+          
+          <div className='PresentationNameSocialMediaImages'>
+            <iframe src="https://github.com/sponsors/Joul-Alessa/button" title="Sponsor Joul Alessa" height="32" width="114" style={{border: '0', borderRadius: '6px'}}></iframe>
+          </div>
         </div>
       </div>
     </>
