@@ -7,6 +7,7 @@ import Kaggle from './assets/images/socials/kaggle.png';
 import GoogleDev from './assets/images/socials/google-dev.png';
 import HFace from './assets/images/socials/hugging-face.png';
 import Orcid from './assets/images/socials/orcid.png';
+import SalesforceTrailhead from './assets/images/socials/salesforce-trailhead.png';
 
 function PresentationName() {
   const textRef = useRef(null);
@@ -68,6 +69,9 @@ function PresentationName() {
             </a>
             <a href='https://orcid.org/0009-0004-2139-5109' target='_blank' rel='noreferrer'>
               <img src={Orcid} alt='OrcID profile'/>
+            </a>
+            <a href='https://www.salesforce.com/trailblazer/joul-alessa' target='_blank' rel='noreferrer'>
+              <img src={SalesforceTrailhead} alt='Salesforce Trailhead profile'/>
             </a>
           </div>
           
