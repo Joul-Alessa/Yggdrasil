@@ -460,7 +460,8 @@ function HomePage() {
             text3={exp.end_date}
             text4={exp.position}
             text5={exp.description}
-            imageUrl={exp.logo.formats}/>
+            imageUrl={exp.logo.formats}
+            backgroundColor={exp.background_color}/>
         ))}
 
         {showStudies && (
@@ -473,7 +474,8 @@ function HomePage() {
             text3={exp.end_date}
             text4={exp.study}
             text5={exp.description}
-            imageUrl={exp.logo.formats}/>
+            imageUrl={exp.logo.formats}
+            backgroundColor={exp.background_color}/>
         ))}
 
         {showProducts && (

@@ -1,7 +1,22 @@
 .HomePageDiv
 {
-  margin: 0 12vw;
   padding-bottom: 20px;
+}
+
+@media (min-width: 1080px)
+{
+  .HomePageDiv
+  {
+    margin: 0 12vw;
+  }
+}
+
+@media (max-width: 1079px)
+{
+  .HomePageDiv
+  {
+    margin: 0 5%;
+  }
 }
 
 .DivGlassmorphism
@@ -48,7 +63,7 @@
   -webkit-backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: rgb(255, 255, 255);
-  width: 65vw;
+  width: 70vw;
   max-height: 90vh;
   
   display: flex;
@@ -56,6 +71,22 @@
   overflow: hidden;
   white-space: normal;
   word-break: break-word;
+}
+
+@media (min-width: 1080px)
+{
+  .modal-content
+  {
+    width: 70vw;
+  }
+}
+
+@media (max-width: 1079px)
+{
+  .modal-content
+  {
+    width: 95%;
+  }
 }
 
 .modal-body

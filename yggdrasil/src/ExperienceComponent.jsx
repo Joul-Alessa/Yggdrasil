@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import './ExperienceComponent.css'
 
-function ExperienceComponent({ text1, text2, text3, text4, text5, imageUrl }) {
+function ExperienceComponent({ text1, text2, text3, text4, text5, imageUrl, backgroundColor }) {
   const apiBaseUrl = import.meta.env.VITE_API_URL;
   const { t } = useTranslation();
   
@@ -40,7 +40,7 @@ function ExperienceComponent({ text1, text2, text3, text4, text5, imageUrl }) {
   return (
     <>
       <div className='ExperienceComponent'>
-        <div className='ExperienceComponentImageFlex'>
+        <div className='ExperienceComponentImageFlex' style={{ backgroundColor: backgroundColor || '#FFFFFF' }}>
           <div className='ExperienceComponentImage'>
             <img src={apiBaseUrl + url} />
           </div>
